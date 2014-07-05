@@ -1,0 +1,14 @@
+{% extends 'members/base_members.html' %}
+
+{% block content %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h2 class="text-center">Successfully removed {{first_name}} {{last_name}} from database</h2>     
+        </div>
+      <div class="col-md-1"></div>
+      {% include 'members/members_list.html'%}
+      <br>
+      </div>
+    </div>
+{% endblock %}

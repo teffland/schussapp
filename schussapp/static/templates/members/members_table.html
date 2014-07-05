@@ -1,0 +1,51 @@
+  <!-- Table -->
+  <div class="row">
+    <ul class="nav nav-tabs nav-justified">
+      <!-- Browse Members in DB -->
+      <li class="active"><a onclick="filter_member_table('all')" data-toggle="tab">All Members</a></li>
+      <li><a onclick="filter_member_table('active')" data-toggle="tab">Active Members</a></li>
+      <li><a onclick="filter_member_table('inactive')" data-toggle="tab">Inactive Members</a></li>
+    </ul>
+  </div>
+    <div class="row panel panel-default nav-tabs">
+      <table class="table" >
+        <thead class="text-center">
+            <tr>
+                <th>ID</th>
+                <th>Pass #</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Type</th>
+                <th>Active</th>
+                <th>Flags</th>
+            </tr>
+        </thead>
+      </table>
+      <div class="scrollable" style="max-height:325px; height:auto;">
+        <table class="table">
+          <tbody class="member text-center"  id="member_table">
+              {% for member in filter_list %}
+                
+                  {% for pass in member.current_pass_list %}
+                  
+                      <tr>
+                          <td id="id">{{member.id}}</td>
+                          <td id="active_id">{{pass.active_id}}</td>
+                          <td id="last_name">{{member.first_name}}</td>
+                          <td id="first_name">{{member.last_name}}</td>
+                          <td id="member_type">{{pass.member_type}}</td>
+                          <td id="is_current">{{pass.season.is_current|yesno|capfirst}}</td>
+                          <td id="is_flagged">
+                            {% if pass.lost_stolen %}LS{% endif%}
+                            {% if pass.bus_flag %}{% if pass.lost_stolen %},{% endif %}BF{% endif%}
+                            {% if pass.pass_flag %}{% if pass.lost_stolen or pass.bus_flag %},{% endif %}PF{% endif%}
+                          </td>
+                          <!-- Hidden elements of table, used for jQuery to filter display of rows on -->
+                          <td id="email" class="hidden">{{member.email}}</td>
+                      </tr>
+                  {% endfor %}
+              {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>

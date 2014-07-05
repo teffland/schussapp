@@ -1,0 +1,47 @@
+{% extends 'members/base_members.html' %}
+
+{% block content %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          {% if not bus_flag_form %}
+            {% if removed_flag %}
+              <h2 class="text-center">Removed bus flag for<br>{{first_name}} {{last_name}}</h2>
+            {% else %}
+              <h2 class="text-center">Successfully bus flagged <br>{{first_name}} {{last_name}}</h2>
+            {% endif %}
+            <br>
+            <div class="row">
+              <div class="btn-group btn-group-lg col-md-offset-5">
+                <a href="{% url 'members_view' id=member.id active_id=pass.active_id%}" class="btn btn-default btn-large">Right on!</a>
+              </div>
+            </div>
+          {% else %}
+          <h2 class="text-center">Flag {{first_name}} {{last_name}}'s pass<br> from busing</h2>
+
+          <form class="form-horizontal" role="form" method="post"> {% csrf_token %}
+            <!-- First name -->
+            <div class="form-group {% if bus_flag_form.bus_flag_note.errors %}has-error{% endif %}">
+              <label for="id_bus_flag_note" class="col-sm-3 control-label">Bus Flag Note</label>
+              <div class="col-sm-8">
+                {{bus_flag_form.bus_flag_note}}
+              </div>
+              
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-3 col-sm-8">
+                <button type="submit" class="btn btn-default pull-right">Submit</button>
+              </div>
+            </div>
+          </form>  
+          {% endif %}
+        <div class="col-md-1"></div>
+            
+      </div>
+      
+
+      {% include 'members/members_list.html'%}
+      <br>
+      </div>
+    </div>
+{% endblock %}

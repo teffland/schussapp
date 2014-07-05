@@ -1,0 +1,106 @@
+.jumbotron {
+    background-color: #e6e485;
+}
+
+p {
+    /*color: rgba(55, 0, 197, 0.43);*/
+}
+
+.success {
+    background: grey;
+    text-align: center;
+}
+
+body {
+    background-color: #BFE2FF;
+}
+
+/*** Menu Bar ***/
+.navbar-inverse {
+    background-color: rgba(41, 103, 182, 0.89);
+    border-color: #BFE2FF;/*rgba(60, 92, 134, 0.89);*/
+}
+/*** Menu Bar Active ***/
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus {
+    background-color: #BFE2FF;
+    color: #999;
+}
+
+/*** Menu Bar non-active link color ***/
+.navbar-inverse .navbar-nav>li>a, .navbar-inverse .navbar-brand{
+    color: #FFF;
+}
+/*** active link color ***/
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover,
+.navbar-inverse .navbar-nav>.active>a:focus {
+    color: rgba(41, 103, 182, 0.89);
+}
+
+/**
+ * For displaying member details page
+*/
+.text-big {
+    font-size: 18px;
+}
+.text-small {
+    font-size: 16px;
+}
+
+/**
+ * Used to create the clickable member list sidebar
+*/
+.member tr:hover {
+    background-color: rgba(41, 103, 182, 0.89);
+    color: #FFF;
+}
+
+.member tr.selected {
+    background-color: rgba(41, 103, 182, 0.89);
+    color: #FFF;
+}
+
+.error_message {
+    color: #FF3333;
+}
+
+/**
+ * Used to hide elements
+*/
+.hidden {
+    display: none;
+}
+
+/**
+ * Make the tables scrollabe
+*/
+.scrollable {
+    overflow-y:auto;
+}
+.fixed {
+
+}
+
+/**
+ * Make the table tabs look awesome
+*/
+.nav-tabs>li>a {
+    color: #000;
+    background-color: #ddd;
+    border: 1px solid #ccc;
+    border-bottom-color: #FFF;
+    cursor: default;
+}
+.nav-tabs>li.active>a {
+    color:#000;
+}
+
+/**
+ * Make warning text yellow, and alert text red (used for flags)
+*/
+.warning {
+    color: #E6E600;
+}
+.alert {
+    color: #B80000;
+}

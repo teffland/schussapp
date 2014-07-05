@@ -1,0 +1,62 @@
+{% extends 'busing/base_busing.html' %}
+
+{% block content %}
+    <div class="container">
+  
+      {% if not bus_list %}
+      <div class="row">
+        <div class="col-md-6">
+          <h1>Busing</h1>
+            <div class="btn-group">
+              <a class="btn btn-default pull-left" href="{% url 'busing_add' %}" >Create Bus</a>
+            </div>
+          <p class="lead">Select an existing bus or create a new one to begin</p>
+        </div>
+      </div>
+      {% else %}
+      <div class="row">
+        <div class=" col-lg-8">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="btn-group ">
+                <a class="btn btn-default pull-left" href="{% url 'busing_add' %}" >Create Bus</a>
+              </div>
+            </div><!-- /.col-lg-6 -->
+            <div class="col-lg-6">
+              <div class="input-group">
+                <select class="form-control" id="id_bus" name="bus">
+                  {% for bus in bus_list %}
+                    <option value="bus.date">{{bus.date}} - {{bus.number}}</option>
+                  {% endfor %}
+                </select>
+                <span class="input-group-btn">
+                  <">Go!</button>
+                </span>
+              </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+          </div>
+          <h2>{{date|date:"l - F jS, Y"}}</h2>
+          
+          <div class="row">
+            {% for bus in today_list %}
+              <div class="col-xs-3">
+                <h4>{{bus.number}}</h4>
+              </div>
+              
+            {% endfor %}           
+          </div>
+        </div><!-- /.col-lg-8 -->
+        <div class="col-lg-4">
+          
+        </div>
+
+        
+        
+      </div>  
+      <div class="hidden">
+        {% include 'members/members_table.html'%}
+      </div>        
+      {% endif %}
+
+    </div><!-- /.container -->
+{% endblock %}

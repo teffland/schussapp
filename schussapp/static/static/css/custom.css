@@ -1,0 +1,33 @@
+/**
+ * Similarly to the custom.js file, this file is intended for snippets of weird CSS that do cool things
+ * All style-related CSS should go in the approriate base*.css file
+ *
+*/
+
+/*
+.merged {
+    margin:10px;
+}
+
+.merged .input-group-addon {
+    border-right: 0px;
+    background-color: #FFFFFF;
+}
+*/
+.merged input {
+    border-left: 0px;
+    background-color: #FFFFFF;
+}
+
+.focusedInput {
+    border-color: rgba(82,168,236,.8) ;
+    outline: 0;
+    outline: thin dotted \9;
+    -moz-box-shadow: 0 0 8px rgba(82,168,236,.6);
+         box-shadow: 0 0 8px rgba(82,168,236,.6);
+}
+
+/* make date picker prev/next buttons appear*/
+.ui-widget-header .ui-icon {
+    background-image: url("images/ui-icons_FFF_256x240.png");
+}

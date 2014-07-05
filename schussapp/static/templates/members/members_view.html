@@ -1,0 +1,157 @@
+{% extends 'members/base_members.html' %}
+
+{% block content %}
+      <div class="container">
+      <!-- Row of columns -->
+      <!-- Member Details Column -->
+      <div class="row">
+        <div class="col-md-7 text-big">
+            <!-- Row with Thumbnail -->
+            <div class="row">
+              <div class="col-md-4">
+                <br>
+                <img src="/static/img/headshot-blank.jpg" alt="Blank Headshot" class="img-thumbnail img-responsive">
+              </div>
+              <div class="col-md-8">
+                <div class="row">
+                  <h1>{{member.first_name}} {{member.last_name}}</h1>
+                  <!-- Flag label displays with tooltips displaying the note -->
+                  {% if pass.lost_stolen %}
+                    <span class="label label-success" id="lost_stolen" data-toggle="tooltip"
+                    {% if pass.lost_stolen_note %}title="{{pass.lost_stolen_note}}"{% endif %}>
+                    Lost/Stolen</span>
+                  {% endif %}
+                  {% if pass.bus_flag %}
+                    <span class="label label-warning" id="bus_flag" data-toggle="tooltip"
+                    {% if pass.bus_flag_note %}title="{{pass.bus_flag_note}}"{% endif %}>
+                    Bus Flag</span>
+                  {% endif %}
+                  {% if pass.pass_flag %}
+                    <span class="label label-danger" id="pass_flag" data-toggle="tooltip"
+                    {% if pass.pass_flag_note %}title="{{pass.pass_flag_note}}"{% endif %}>
+                    Pass Flag</span>
+                  {% endif %}                  
+                </div>
+                <div class="row">
+                  <br>
+                  <div class="col-md-3">
+                    <p><strong>ID #:</strong> &nbsp{{member.id}}</p>
+                  </div>
+                  <div class="col-md-8">
+                    <p><strong>Pass #:</strong>&nbsp{{pass.active_id}}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Membership Type:</strong>  &nbsp{{verbose_member_type}}
+                      {% if verbose_member_subtype %}
+                        <br>
+                        &nbsp&nbsp&nbsp&nbsp<strong>Subtype:</strong> &nbsp{{verbose_member_subtype}}
+                      
+                      {% endif %}
+                    </p>
+                    <p><strong>Person Number:</strong> &nbsp
+                    {% if member.person_number %}{{member.person_number}}
+                    {% else %} None
+                    {% endif %}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row with Contact Info -->
+            <div class="row">
+              <br>
+              <div class="col-md-6">
+                <p><strong>Phone:</strong> &nbsp{{member.phone}}</p>
+                <p><strong>E-Mail:</strong> &nbsp{{member.email}}</p>
+                <p><strong>DOB:</strong> &nbsp{{member.birthday}}</p>
+                <p><strong>Gender:</strong> &nbsp{{verbose_gender}}</p>
+
+
+              </div>
+              <div class="col-md-6">
+                <p><strong>Dorm:</strong> &nbsp{{verbose_dorm_type}}</p>
+                <p><strong>Address:</strong>
+                  {% if member.local_address %}
+                  <p>
+                    {{member.local_address}}<br>
+                    {{member.city}}, &nbsp {{member.state}} &nbsp {{member.zip_code}}
+                  </p>
+                  {% else %}
+                    {{member.city}}, &nbsp {{member.state}} &nbsp {{member.zip_code}}</p>
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+
+          
+  
+            
+            <!-- Buttons -->
+            <!-- If member is enrolled, display all the buttons -->
+            {% if pass.active_id %}
+            <div class="row col-md-11">
+              <br>
+              <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                  <a href="{% url 'members_edit' id=member.id %}" class="btn btn-default">Edit</a>
+                </div>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Remove
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    {% if not pass.lost_stolen %}
+                      <li><a href="{% url 'members_unenroll_pass' id=member.id %}" class="confirm">Unenroll Pass</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'members_remove_member' id=member.id %}" class="confirm">Remove Member</a></li>
+                  </ul>
+                </div>
+                <div class="btn-group">
+                  <a href="{% url 'members_lost_stolen' id=member.id active_id=pass.active_id%}" class="btn btn-default"
+                  {% if pass.lost_stolen %}disabled="disabled"{% endif %}>Lost/Stolen</a>
+                </div>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Flag
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'members_bus_flag' id=member.id active_id=pass.active_id%}" >
+                    {% if not pass.bus_flag %}Bus Flag
+                    {% else %}Remove Bus Flag
+                    {% endif %}</a></li>
+                    <li><a href="{% url 'members_pass_flag' id=member.id active_id=pass.active_id%}">
+                    {% if not pass.pass_flag %}Pass Flag
+                    {% else %}Remove Pass Flag
+                    {% endif %}</a></li>
+                  </ul>
+                </div>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default">Print</button>
+                </div>
+              </div>
+            </div>  
+          <!-- Else only let them enroll or remove-->
+            {% else %} 
+            <div class="row">
+              <br>
+              <div class="col-md-3">
+                <div class="btn-group btn-group-justified">
+                  <a href="{% url 'members_edit' id=member.id %}" class="btn btn-default">Edit</a>
+                </div>
+              </div>
+              <div class="col-md-3 col-md-offset-4">
+                <div class="btn-group btn-group-justified">
+                  <a href="{% url 'members_remove_member' id=member.id %}" class="btn btn-default confirm">Remove Member</a>
+                </div>
+              </div>
+            </div>  
+            {% endif %}  
+        </div>
+        
+      {% include 'members/members_list.html'%}
+      
+{% endblock %}

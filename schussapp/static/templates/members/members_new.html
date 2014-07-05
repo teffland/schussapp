@@ -1,0 +1,15 @@
+{% extends 'members/base_members.html' %}
+
+{% block content %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7">
+          <h2>Add New Member</h2>
+          {% include 'members/new_member_form.html' %}      
+        </div>
+        
+      {% include 'members/members_list.html'%}
+      <br>
+      </div>
+    </div>
+{% endblock %}

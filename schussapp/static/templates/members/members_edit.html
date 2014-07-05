@@ -1,0 +1,21 @@
+{% extends 'members/base_members.html' %}
+
+{% block content %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7">
+          {% if member_error %}
+            <h2>{{member_error_msg}}</h2>
+          {% elif pass_error %}
+            <h2>{{pass_error_msg}}</h2>
+          {% else %}
+            <h2>Edit Member Record</h2>
+            {% include 'members/edit_member_form.html' %}
+          {% endif %}
+        </div>
+        
+      {% include 'members/members_list.html'%}
+      <br>
+      </div>
+    </div>
+{% endblock %}

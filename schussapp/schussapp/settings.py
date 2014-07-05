@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'h-w$u%slt^sh0a4j$92rlji9kbj$k(3(707eda&1fn-d0=b5xv'
+SECRET_KEY = 'v*@w3+rd1d7phrn3ncn82jm%*=1l4q4xst+el#_r(pv0r7*5k('
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,6 +36,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions', # adds extra command line options for ./manage.py
+    'localflavor', #used for US-centric forms and data fields like state, zip, phone
+    'members',
+    'busing',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -57,8 +61,12 @@ WSGI_APPLICATION = 'schussapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'schuss_app',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
     }
 }
 
@@ -80,3 +88,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Template Location
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, "static", "templates"),
+    #src/static/templates/
+)
+
+if DEBUG:
+    MEDIA_URL = '/media/'
+    STATIC_ROOT =os.path.join(BASE_DIR, "static", "static-only")
+    MEDIA_ROOT = os.path.join(BASE_DIR, "static", "media")
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, "static", "static"),
+    )

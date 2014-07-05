@@ -1,0 +1,27 @@
+{% extends 'members/base_members.html' %}
+
+{% block content %}
+      <div class="container">
+      <!-- Row of columns -->
+      <!-- Member Details Column -->
+      <div class="row">
+        <div class="col-md-7 text-big">
+          <h2>Member Details</h2>
+          <p>Select a member from the sidebar to display their information, or add a new member.</p>
+
+
+        </div>
+        
+      {% include 'members/members_list.html'%}
+      
+<!-- Old place holder container 
+    <div class="container">
+
+      <div class="starter-template">
+        <h1>Members</h1>
+        <p class="lead">This section will contain the Members framework and functionality... Someday!</p>
+      </div>
+
+    </div>
+-->
+{% endblock %}
