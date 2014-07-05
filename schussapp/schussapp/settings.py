@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions', # adds extra command line options for ./manage.py
     'localflavor', #used for US-centric forms and data fields like state, zip, phone
+    'south',
     'members',
     'busing',
 )
