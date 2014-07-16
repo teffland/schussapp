@@ -1,25 +1,25 @@
-   <!-- Add a bus -->
-  <form class="form-horizontal" role="form" action="{% url 'busing_add' %}" method="post"> {% csrf_token %}
+   <!-- Change a bus -->
+  <form class="form-horizontal" role="form" action="{% url 'busing_edit' id=bus.id %}" method="post"> {% csrf_token %}
     
     <!-- Number -->
-    <div class="form-group {% if add_bus_form.number.errors %}has-error{% endif %}">
+    <div class="form-group {% if edit_bus_form.number.errors %}has-error{% endif %}">
       <label for="id_number" class="col-sm-3 control-label">Bus Number</label>
       <div class="col-sm-8">
-        {{add_bus_form.number}}
+        {{edit_bus_form.number}}
       </div>
     </div>
     <!-- Capacity -->
-    <div class="form-group {% if add_bus_form.capacity.errors %}has-error{% endif %}">
+    <div class="form-group {% if edit_bus_form.capacity.errors %}has-error{% endif %}">
       <label for="id_capacity" class="col-sm-3 control-label">Capacity</label>
       <div class="col-sm-8">
-        {{add_bus_form.capacity}}
+        {{edit_bus_form.capacity}}
       </div>
     </div>
     <!-- Date -->
-    <div class="form-group {% if add_bus_form.date.errors %}has-error{% endif %}">
+    <div class="form-group {% if edit_bus_form.date.errors %}has-error{% endif %}">
       <label for="id_date" class="col-sm-3 control-label">Date</label>
       <div class="col-sm-8 datepicker">
-        {{add_bus_form.date}}
+        {{edit_bus_form.date}}
       </div>
     </div>
     

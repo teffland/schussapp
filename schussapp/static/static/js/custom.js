@@ -30,7 +30,7 @@ $(function() {
 */
 $(".confirm").confirm({
         text: "Are you sure you want to delete this? There is no way to reverse this action...",
-        title: "Confirmation required",
+        title: "Dude, you sure?",
         confirmButton: "Oh Fur Sure",
         cancelButton: "Hells No"
 });
@@ -38,11 +38,18 @@ $(".confirm").confirm({
 /**
  * This snippet is used for assigning a ".selected" class to a member table row
  * And removes the class from all other rows
+ * but won't touch header rows
 */
 $("tbody tr").click(function() {
-   $(this).addClass('selected').siblings().removeClass("selected");
+    if ( $(this).children('th').length == 0 ) {
+        $(this).addClass('selected').siblings().removeClass("selected");
+        $(this).parents('.panel').find('.on_select').removeClass('hidden');
+    }
 });
 
+/**
+ * Populate bus reservation edit menu to include a reservation on select
+*/
 /**
  * Used in conjunction with member select table sidebar in 'member_list'
  * It finds the selected user, and loads their details page
@@ -69,12 +76,57 @@ function display_selected_member() {
 }
 
 /**
- * View selected on double clicl
+ * view selected bus day on click
 */
-/*$('tr.selected').dblclick(function() {
-    alert('called');
-   display_selected_member();
-});*/
+function display_selected_bus() {
+    var date = $('select#id_bus option:selected').val();
+    //console.log(date);
+    current_url = document.URL;
+    index = current_url.indexOf("busing");
+    prefix = current_url.substring(0,index);
+    window.location.href = prefix + 'busing/'+date;
+}
+
+/**
+ * take selected bus number and waiting list member and post a checkin form to that bus
+ * by filling in the form for that bus and submitting with jQuery
+ * ... probably sketchy
+*/
+function reserve_in_selected_bus() {
+    bus_id = $('select#id_bus_num option:selected').val();
+    selected_row = $('.wait_list .selected');
+    res_id = selected_row.children("#res_id").text();
+    
+    current_url = document.URL;
+    index = current_url.indexOf("busing");
+    prefix = current_url.substring(0,index);
+    window.location.href = prefix + 'busing/buscheckin/switch/' + res_id + '/' +bus_id;
+    
+    
+}
+
+/**
+ * Calls correct url to remove a selected checkin from a bus list
+*/
+function remove_selected_buscheckin() {
+    var id = $('.selected').find('td#res_id').text();
+    console.log(id);
+    current_url = document.URL;
+    index = current_url.indexOf("busing");
+    prefix = current_url.substring(0,index);
+    window.location.href = prefix + 'busing/buscheckin/remove/'+id;
+}
+/** Slight change to confirm.js  to accomdate remove selected **/
+$('.delete_confirm').confirm({
+    text: "Are you sure you want to delete this? There is no way to reverse this action...",
+    title: "Dude, you sure?",
+    confirm: function(button) {
+        remove_selected_buscheckin();
+    },
+    confirmButton: "Oh Fur Sure",
+    cancelButton: "Hells No"
+});
+
 
 /**
  * This function is used to enable/disable the reserved id select box
@@ -164,7 +216,25 @@ $('#search-bar').keyup(function() {
     }).hide();
 });
 
-
+/**
+ * Used in busing: Fill in Name on valid pass number
+ * populate member bus reservation field on pass field keyup
+*/
+$('.pass_search').keyup(function() {
+    var field_parent = $(this).parents('.filter_row');
+    //console.log(field_parent);
+    var first_f = field_parent.find('.first_search');
+    var last_f = field_parent.find('.last_search');
+    var val = $(this).val().match(/\d{1,5}/);    
+    //console.log(val);
+    var row = $('td#active_id').filter(function() {
+        //console.log( $(this).text() == val);
+        return $(this).text() == val;
+    }).parent('tr');
+    console.log(row.children('td#first_name').text());
+    first_f.val( row.children('td#first_name').text() );
+    last_f.val( row.children('td#last_name').text() );
+});
 
 /**
  * This code initializes the tooltips which display the bus, pass, or lost/stolen notes in the appropriate location

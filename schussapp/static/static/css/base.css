@@ -37,14 +37,24 @@ body {
     color: rgba(41, 103, 182, 0.89);
 }
 
+.panel-primary>.panel-heading {
+    background-color: rgba(41, 103, 182, 0.89);
+    border-color: #ddd;
+}
+.panel-primary>.panel-heading h4 small {
+    color:#ccc;
+}
 /**
  * For displaying member details page
 */
 .text-big {
     font-size: 18px;
 }
+.text-med {
+    font-size: 15px;
+}
 .text-small {
-    font-size: 16px;
+    font-size: 12px;
 }
 
 /**
@@ -59,6 +69,11 @@ body {
     background-color: rgba(41, 103, 182, 0.89);
     color: #FFF;
 }
+.member tr.head:hover {
+    background-color:#fff;
+    color: #333;
+}
+
 
 .error_message {
     color: #FF3333;
@@ -103,4 +118,33 @@ body {
 }
 .alert {
     color: #B80000;
+}
+
+/**
+ * Settings for inline bus reservation form 
+*/
+.no-pad {
+    padding-top:4 !important;
+    padding-left:0 !important;
+    padding-right:0 !important;
+}
+.pass_search, .first_search, .last_search {
+    width: 100% !important;
+}
+.pass_fld {
+    width:100% !important;
+    padding-right:10px;
+}
+.first_fld, .last_fld {
+    width:48% !important;
+}
+.bus-submit {
+    padding-left:4px;
+}
+input[type=radio] {
+    display:none; 
+}
+
+.wait_form {
+  width:80% !important;
 }

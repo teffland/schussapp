@@ -27,9 +27,12 @@ urlpatterns = patterns('members.views',
 urlpatterns += patterns('busing.views',
     url(r'^busing$', 'busing_home', name='busing_home'),        # busing home page
     url(r'^busing/(?P<date>(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]))$', 'busing_home', name='busing_home'),
-    url(r'^busing/add$', 'busing_add', name='busing_add')       # add new bus to system
-    #url(r'^busing/view/(?P<id>\d{1,5})', 'busing_view', name='busing_view'),  # view members page with pass num posted
-    #url(r'^busing/edit/(?P<id>\d{1,5})$', 'busing_edit', name='busing_edit'),  # edit members page                        
+    url(r'^busing/add$', 'busing_add', name='busing_add'),       # add new bus to system
+    url(r'^busing/edit/(?P<id>\d{1,5})$', 'busing_edit', name='busing_edit'),  # edit bus page                        
+    url(r'^busing/remove/(?P<id>\d{1,5})', 'busing_remove', name='busing_remove'),  # remove bus
+    url(r'^busing/buscheckin/remove/(?P<id>\d{1,5})', 'buscheckin_remove', name='buscheckin_remove'),  # remove bus
+    url(r'^busing/buscheckin/switch/(?P<res_id>\d{1,5})/(?P<bus_id>\d{1,5})', 'buscheckin_switch', name='buscheckin_switch'),  # remove bus
+
 )
 
 ### Mountain Links ###

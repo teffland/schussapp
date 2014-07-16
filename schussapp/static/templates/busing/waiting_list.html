@@ -1,146 +1,101 @@
-{% extends 'busing/base_busing.html' %}
-
-{% block content %}
-    <div class="container">
-  
-      {% if not bus_list %}
-      <div class="row">
-        <div class="col-md-6">
-          <h1>Busing</h1>
-            <div class="btn-group">
-              <a class="btn btn-default pull-left" href="{% url 'busing_add' %}" >Create Bus</a>
-            </div>
-          <p class="lead">Select an existing bus or create a new one to begin</p>
-        </div>
-      </div>
-      {% else %}
-      <div class="row">
-        <div class=" col-lg-5">
-          <h2>{{date|date:"l - F jS, Y"}}</h2>
-        </div><!-- /col-4-->
-        <div class=" col-lg-2" style="padding-top:20px;">
-          <div class="btn-group center-block">
-            <a class="btn btn-default" href="{% url 'busing_add' %}" >Create Bus</a>
-          </div>
-        </div><!-- /col-4-->
-        <div class=" col-lg-4 col-lg-offset-1" style="padding-top:20px;">
-          <div class="input-group">
-            <select class="form-control" id="id_bus" name="bus">
-              {% for day in days_list %}
-                <option value="{{day|date:"Y-m-d"}}">{{day}}</option>
-              {% endfor %}
-            </select>
-            <span class="input-group-btn">
-              <a onclick="display_selected_bus()"  class="btn btn-default">View Day</a>
-            </span>
-          </div><!-- /input-group -->
-        </div><!-- /col-4-->
-      </div> 
-      <div class="row">
-        <div class="col-lg-8">
-          <div class="row">
-            {% for bus in today_list %}
-              <div class="col-xs-6">
-               <div class="panel panel-primary">
+               <div class="panel panel-default">
                  <div class="panel-heading clearfix">
-                  <h4 class="panel-title pull-left" style="padding-top:7.5px;">
-                      Bus {{bus.number}}
-                      <small>&nbsp Open Seats: {{bus.n_open_seats}}</small>
-                  </h4>
-                  <div class="btn-group pull-right ">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                      Edit  <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                      <li><a href="{% url 'busing_edit' id=bus.id %}">Edit Bus</a></li>
-                      <li><a href="{% url 'busing_remove' id=bus.id %}" class="confirm">Remove Bus</a></li>
-                      <li class="divider hidden on_select"></li>
-                      <!--<li><a href="#" class="hidden on_select">Change Pickup</a></li>-->
-                      <li><a class="hidden on_select delete_confirm">Remove Reservation</a></li>
-                    </ul>
-                  </div>
+                  <h4 class="panel-title pull-left" style="padding-top:7.5px;">Waiting List</h4>
+                  <div class="input-group hidden on_select">
+                    <select class="form-control wait_form pull-right" id="id_bus_num" name="bus_num">
+                      {% for bus in today_list %}
+                        <option value="{{bus.id}}">Bus {{bus.number}}</option>
+                      {% endfor %}
+                    </select>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Move <span class="caret"></span></button>
+                      <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                      <li><a onclick="reserve_in_selected_bus()">Move to Bus</a></li>
+                      <li><a class="delete_confirm">Remove Reservation</a></li>
+                    </span>
+                  </div><!-- /input-group -->
                  </div>
-                 <div class="panel-body">
+
+                <div class="panel-body">
                   <table class="table" >
                     <thead class="text-center">
                         <tr>
                             <th>Pass #</th>
                             <th>First Name</th>
                             <th>Last Name</th>
-                            <th>Type</th>
+                            <th>Phone</th>
                         </tr>
                     </thead>
                   </table>
-                  <div class="scrollable" style="height:250px;">
+                  <div class="scrollable" style="max-height:300px; height:auto;">
                     <table class="table">
-                       <tbody class="text-small member bus-checkin">
+                       <tbody class="text-small member bus-checkin wait_list">
                          <tr class="text-med head"><th>Ellicot</th></tr>
-                          {% for res in bus.res_list %}
+                          {% for res in waiting_list.res_list %}
                            {% if res.pickup == "ELLI" %}
                            <tr>
                               <td id="res_id" class="hidden">{{res.id}}</td>
                               <td id="pass">{{res.member.active_id}}</td>
                               <td id="first_name">{{res.member.member.first_name}}</td>
                               <td id="last_name">{{res.member.member.last_name}}</td>
-                              <td id="member_type">{{res.member.member_type}}</td>
+                              <td id="member_phone">{{res.member.member.phone}}</td>
                             </tr>
                            {% endif %}
                           {% endfor %}
                          <tr class="text-med head"><th>Governors</th></tr>
-                          {% for res in bus.res_list %}
+                          {% for res in waiting_list.res_list %}
                            {% if res.pickup == "GOV" %}
                            <tr>
                               <td id="res_id" class="hidden">{{res.id}}</td>
                               <td id="pass">{{res.member.active_id}}</td>
                               <td id="first_name">{{res.member.member.first_name}}</td>
                               <td id="last_name">{{res.member.member.last_name}}</td>
-                              <td id="member_type">{{res.member.member_type}}</td>
+                              <td id="member_phone">{{res.member.member.phone}}</td>
                             </tr>
                            {% endif %}
                           {% endfor %}
                          <tr class="text-med head"><th>Main St.</th></tr>
-                          {% for res in bus.res_list %}
+                          {% for res in waiting_list.res_list %}
                            {% if res.pickup == "MAIN" %}
                            <tr>
                               <td id="res_id" class="hidden">{{res.id}}</td>
                               <td id="pass">{{res.member.active_id}}</td>
                               <td id="first_name">{{res.member.member.first_name}}</td>
                               <td id="last_name">{{res.member.member.last_name}}</td>
-                              <td id="member_type">{{res.member.member_type}}</td>
+                              <td id="member_phone">{{res.member.member.phone}}</td>
                             </tr>
                            {% endif %}
                           {% endfor %}
-                        
+
                       </tbody>
                     </table>
                   </div>
                   <!-- Reserve member form -->
-                  <div class="row col-sm-12">
+                  <div class="row col-sm-11">
                     <h5>Reserve a Member</h5>
                   </div>
                   <div class="filter_row col-sm-12">
                     <form class="form-inline" role="form" method="post"> {% csrf_token %}
                       <div class="row">
+                        <div class="center-block">
                           <div class="form-group first_fld">
                             <label class="sr-only" for="id_first_name">First</label>
                             <input type="text" class="form-control first_search"
-                                   id="id_first_name" maxlength="30" name="first_name"
-                                   placeholder="First" {% if not bus.is_open %}disabled{%endif%}>
+                                   id="id_first_name" maxlength="30" name="first_name" placeholder="First">
                           </div>
                           <div class="form-group last_fld pull-right">
                             <label class="sr-only" for="id_last_name">Last</label>
                             <input type="text" class="form-control last_search"
-                                   id="id_last_name" maxlength="50" name="last_name" placeholder="Last"
-                                   {% if not bus.is_open %}disabled{%endif%}>
+                                   id="id_last_name" maxlength="50" name="last_name" placeholder="Last">
                           </div>
+                        </div>
                       </div>
                       <div class="row">
                         <div class="col-sm-3 no-pad">
                           <div class="form-group pass_fld">
                             <label class="sr-only" for="id_pass_num">Pass</label>
                             <input type="number" class="form-control pass_search" 
-                                   id="id_pass_num" max="999" min="1" name="pass_num" placeholder="42"
-                                   {% if not bus.is_open %}disabled{%endif%}>
+                                   id="id_pass_num" max="999" min="1" name="pass_num" placeholder="42">
                           </div>
                         </div>
                         <div class="col-sm-6 no-pad">
@@ -158,42 +113,19 @@
                         </div>
                         <div class="col-sm-3 no-pad">
                           <div class="form-group pull-right bus-submit">
-                            <button type="submit" class="btn btn-default"
-                              {% if not bus.is_open %}disabled{%endif%}>Submit</button>
+                            <button type="submit" class="btn btn-default">Submit</button>
                           <!-- hidden bus field makes submit from this field go to the right bus -->
                           </div>
                         </div>
                       </div>
                       <div class="hidden">
                         <select id="id_bus" name="bus">
-                          <option value="{{bus.id}}" selected="selected"></option>
+                          <option value="{{waiting_list.id}}" selected="selected">{{waiting_list.number}}</option>
                         </select>
                       </div>
-                    </form>  
-                  </div> 
-                 </div> 
+                    </form>
+                  </div>
                  </div>
-
-                </div>
-            {% endfor %}           
- 
-              </div>
-              
-          </div>
-          <div class="col-lg-4">
-            <div class="row">
-             {% include 'busing/waiting_list.html' %} 
-            </div>
-          </div>
-
-        </div><!-- /.row -->
+                 </div>
         
-        
-      </div>  
-      <div class="hidden">
-        {% include 'members/members_table.html'%}
-      </div>        
-      {% endif %}
 
-    </div><!-- /.container -->
-{% endblock %}

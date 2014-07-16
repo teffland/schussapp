@@ -1,0 +1,13 @@
+{% extends 'busing/base_busing.html' %}
+
+{% block content %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7">
+          <h2>Edit Bus {{bus.number}}</h2>
+          {% include 'busing/edit_bus_form.html' %}      
+        </div>
+      <br>
+      </div>
+    </div>
+{% endblock %}
