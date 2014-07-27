@@ -1,0 +1,109 @@
+{% extends 'mountains/base_mountains.html' %}
+
+{% block content %}
+    <div class="container">
+      <div class="row">
+      	<div class="col-lg-9">
+	        <h1>{{mountain.name}}</h1>
+	        <br>
+	          <!-- Table -->
+
+			<div class="panel panel-primary">
+                 <div class="panel-heading clearfix">
+                  <h4 class="panel-title pull-left" style="padding-top:7.5px;">
+                      Checkins - {{date|date:"m/d/y"}}
+                  </h4>
+                  <!-- Top Right dropdown buttons -->
+                  <div class="btn-group pull-right ">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                      Options  <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="">Print List</a></li>
+                      <li class="divider hidden on_select"></li>
+                      <li><a class="hidden on_select"
+                      	onclick="remove_selected_mountain_checkin()">Remove Check-In</a></li>
+                    </ul>
+                  </div>
+
+                 </div>
+                 <!-- Table header -->
+                 <div class="panel-body">
+                  <table class="table" >
+                    <thead class="text-center">
+                        <tr>
+                            <th>Pass #</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                  </table>
+                  <div class="scrollable" style="max-height:250px;">
+                    <table class="table">
+                       <tbody class="text-small text-center member mountain-checkin">
+                       	{% for checkin in checkins %} {% with checkin.member_pass as pass %}
+                         <tr class="text-med member">
+                         	<td id="checkin_id" class="hidden">{{checkin.id}}</td>
+                         	<td id="active_id">{{pass.active_id}}</td>
+                         	<td id="first_name">{{pass.member.first_name}}</td> 
+                         	<td id="last_name">{{pass.member.last_name}}</td>
+                         	<td id="type">{{pass.member_type}}</td>
+                         	
+                         	
+
+                         </tr>
+                        {% endwith %}{% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- Reserve member form -->
+                  <div class="row col-sm-12">
+                    <h5>Check a Member In</h5>
+                  </div>
+                  <div class="filter_row col-sm-12">
+			         <form class="form-inline" role="form"> {% csrf_token %}
+			          <div class="row filter_row">
+			          	<div class="col-md-2 col-md-offset-1">
+			          		<div class="form-group pass_fld">
+		                      <label class="sr-only" for="id_pass_num">Pass</label>
+		                      <input type="number" class="form-control pass_search" 
+		                             id="id_pass_num" max="999" min="1" name="pass_num" placeholder="42"
+		                             {% if not mountain.is_open %}disabled{%endif%}>
+		                    </div>
+		                </div>
+		                <div class='col-md-3'>
+			              <div class="form-group">
+			                  <label class="sr-only" for="id_first_name">First</label>
+			                  <input type="text" class="form-control first_search"
+			                       id="id_first_name" maxlength="30" name="first_name"
+			                       placeholder="First" {% if not mountain.is_open %}disabled{%endif%}>
+			              </div>
+			            </div>
+			            <div class='col-md-3'>
+			              <div class="form-group">
+			                <label class="sr-only" for="id_last_name">Last</label>
+			                <input type="text" class="form-control last_search"
+			                       id="id_last_name" maxlength="50" name="last_name" placeholder="Last"
+			                       {% if not mountain.is_open %}disabled{%endif%}>
+			              </div>
+		                </div>
+		                <div class="col-sm-3 ">
+		                    <a class="btn btn-default"
+		                    onclick="checkin_member_at_mountain()"
+		                      {% if not mountain.is_open %}disabled{%endif%}>Check-in</a>
+		                  </div>
+		                </div>
+		              </div>
+		            </form>
+                  </div> 
+                 </div> 
+	    </div>
+	  </div>
+
+	  <!-- Hidden active members table to search on -->
+	  <div class="hidden">
+        {% include 'members/members_table.html'%}
+      </div> 
+    </div><!-- /.container -->
+{% endblock %}

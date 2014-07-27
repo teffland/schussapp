@@ -1,12 +1,5 @@
   <!-- Table -->
-  <div class="row">
-    <ul class="nav nav-tabs nav-justified">
-      <!-- Browse Members in DB -->
-      <li class="active"><a onclick="filter_member_table('all')" data-toggle="tab">All Members</a></li>
-      <li><a onclick="filter_member_table('active')" data-toggle="tab">Active Members</a></li>
-      <li><a onclick="filter_member_table('inactive')" data-toggle="tab">Inactive Members</a></li>
-    </ul>
-  </div>
+
     <div class="row panel panel-default nav-tabs">
       <table class="table" >
         <thead class="text-center">
@@ -26,11 +19,11 @@
           <tbody class="member text-center"  id="member_table">
               {% for member in filter_list %}
                 
-                  {% for pass in member.current_pass_list %}
+                  {% for pass in member.pass_list %}
                   
                       <tr>
                           <td id="id">{{member.id}}</td>
-                          <td id="active_id">{{pass.active_id}}</td>
+                          <td id="active_id">{% if pass.active_id and pass.season.is_current %}{{pass.active_id}}{% endif %}</td>
                           <td id="first_name">{{member.first_name}}</td>
                           <td id="last_name">{{member.last_name}}</td>
                           <td id="member_type">{{pass.member_type}}</td>

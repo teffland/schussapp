@@ -1,0 +1,23 @@
+{% extends 'trips/base_trips.html' %}
+
+{% block content %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7">
+	        <div class="row">
+			    <div class=" col-lg-7">
+	                <h2>Edit Trip Reservation</h2>
+	            </div><!-- /col-4-->
+	            <div class=" col-lg-2" style="padding-top:20px;">
+		          <div class="btn-group center-block">
+		            <a class="btn btn-default confirm" href="{% url 'enrollment_remove' enroll_id=res.id %}" >Remove Reservation</a>
+		          </div>
+	          </div><!-- /col-4-->
+	        </div>
+	          <br>									
+            {% include 'trips/edit_enrollment_form.html' %}      
+        </div>
+      <br>
+      </div>
+    </div>
+{% endblock %}

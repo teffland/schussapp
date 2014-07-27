@@ -3,10 +3,59 @@
 {% block content %}
     <div class="container">
 
-      <div class="starter-template">
+      <!--<div class="starter-template">
         <h1>Trips</h1>
         <p class="lead">This section will contain the Trips framework and functionality... Someday!</p>
+      </div>-->
+      <div class="row">
+   		<div class=" col-lg-6">
+          <h1>Trips</h1>
+        </div><!-- /col-4-->
+        <div class=" col-lg-2" style="padding-top:20px;">
+          <div class="btn-group center-block">
+            <a class="btn btn-default" href="{% url 'trips_add' %}" >Create Trip</a>
+          </div>
+        </div><!-- /col-4-->
       </div>
+      <!-- Trip Table -->
+      {% if trips %}
+      	<br>
+      	<!-- Table -->
+	    <div class="col-lg-8">
+	        <div class="row panel panel-default">
+		      <table class="table table-center" >
+		        <thead class="text-center">
+		            <tr>
+		                <th>Name</th>
+		                <th>Leave</th>
+		                <th>Return</th>
+		                <th>Season</th>
+		                <th>Open Seats</th>
+		            </tr>
+		        </thead>
+	       		<tbody class="trip"  id="trip_table">
+	              {% for trip in trips %}
+                    <tr>
+                      <td id="id" class="hidden">{{trip.id}}</td>
+	                  <td id="trip">{{trip.name}}</td>
+	                  <td id="start_date">{{trip.start_date|date:"m/d"}}</td>
+ 	                  <td id="end_date">{{trip.end_date|date:"m/d"}}</td>
+ 	                  <td id="season">{{trip.season}}</td>
+	                  <td id="n_seats">{{trip.n_open_seats}}</td>   
+                    </tr>
+	              {% endfor %}
+	            </tbody>
+		       </table>
+		    </div>
+		    <div class="row">
+		    	<div class="btn-group pull-right">
+		      		<a class="btn btn-default" onclick="display_selected_trip()" >View Selected</a>
+		    	</div>
+	  		</div>
+  	    </div>
+
+
+      {% endif %}
 
     </div><!-- /.container -->
 {% endblock %}

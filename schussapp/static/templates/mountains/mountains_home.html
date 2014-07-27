@@ -2,11 +2,58 @@
 
 {% block content %}
     <div class="container">
+      <div class="row">
+      	<div class="col-lg-9">
+	      <div class="starter-template">
+	        <h1>Mountains</h1>
+	        <div class="panel-group" id="accordion">
+	        {% for mountain in mountains %}
+			  <div class="panel panel-default">
+			    <div class="panel-heading">
 
-      <div class="starter-template">
-        <h1>Mountains</h1>
-        <p class="lead">This section will contain the Mountains framework and functionality... Someday!</p>
-      </div>
+			      <h4 class="panel-title">
+			        <a data-toggle="collapse" data-parent="#accordion" href="#{{mountain.id}}">
+			          {{mountain.name}}
+			        </a>
+			      </h4>
+			    </div>
+			    <div id="{{mountain.id}}" class="panel-collapse collapse collapse">
+			      <div class="panel-body">
+			      	<div class="row">
+			      		<div class="col-md-4">
+							<p>{{mountain.address}}</p>
+							<p>{{mountain.city}}, {{mountain.state}} {{mountain.zip_code}}</p>
+						</div>
+						<div class="col-md-4">
+							{% if mountain.vertical %}
+							<p>Vertical: {{mountain.vertical}} ft.</p>
+							{% endif %}
+							{% if mountain.num_lifts %}
+							<p>Lifts: {{mountain.num_lifts}}</p>
+							{% endif %}
+							{% if mountain.num_trails %}
+							<p>Trails: {{mountain.num_trails}}</p>
+							{% endif %}
+							{% if mountain.ski_acre %}
+							<p>Skiable Acres: {{mountain.ski_acre}}</p>
+							{% endif %}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="btn-group pull-right">
+						      <a class="btn btn-default" href="{% url 'mountains_view' mountain_abbr=mountain.abbr date=today %}" >View Checkins</a>
+						    </div>
+						</div>
+					</div>
+			      </div>
+			    </div>
+			  </div>
+			{% endfor %}
+			</div>
 
+	      </div>
+	    </div>
+	  </div>
     </div><!-- /.container -->
 {% endblock %}

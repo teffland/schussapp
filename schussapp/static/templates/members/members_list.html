@@ -15,6 +15,16 @@
       </div>
   </div>
   <br>
+  <!-- Tabs are specific to viewing members in general -->
+  <!-- No tabs for trips -->
+  <div class="row">
+    <ul class="nav nav-tabs nav-justified">
+      <!-- Browse Members in DB -->
+      <li class="active"><a onclick="filter_member_table('all')" data-toggle="tab">All Members</a></li>
+      <li><a onclick="filter_member_table('active')" data-toggle="tab">Active Members</a></li>
+      <li><a onclick="filter_member_table('inactive')" data-toggle="tab">Inactive Members</a></li>
+    </ul>
+  </div>
   {% include 'members/members_table.html' %}
   
   <!-- Submit table selection -->

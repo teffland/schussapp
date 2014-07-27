@@ -27,3 +27,7 @@
          box-shadow: 0 0 8px rgba(82,168,236,.6);
 }
 
+/* make date picker prev/next buttons appear*/
+.ui-widget-header .ui-icon {
+    background-image: url("images/ui-icons_FFF_256x240.png");
+}

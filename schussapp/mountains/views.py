@@ -1,9 +1,77 @@
-from django.shortcuts import render
+# django imports
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
+from django.contrib import messages
+from django.http import Http404
+from django.db.models import Q
 
-# Create your views here.
+
+# model imports
+from members.models import Member, Pass, Season
+from mountains.models import Mountain, MountainCheckin, MountainScheduleSlot
+# other imports
+from datetime import datetime
+from members.views import get_current_season
+
 ### Mountains index ###
+"""
+ * Display list of mountain links
+"""
 def mountains_home(request):
+    context = {'active':'mountains'}
+
+    mountains = Mountain.objects.all().order_by('name')
+    context['mountains'] = mountains
+    context['today'] = datetime.strftime(datetime.now().date(), '%Y-%m-%d')
     
-    return render(request, 'mountains/mountains_home.html',{
-                    'active':'mountains'
-                  })
+    return render(request, 'mountains/mountains_home.html', context)
+
+""" 
+ * View the checkins for a mountain overall, or on a day
+"""
+def mountains_view(request, mountain_abbr=None, date=datetime.strftime(datetime.now().date(), '%Y-%m-%d')):
+    context = {'active':'mountains'}
+
+    mountain = get_object_or_404(Mountain, abbr=mountain_abbr)
+    context['mountain'] = mountain
+    date = datetime.strptime(date, '%Y-%m-%d').date()
+    context['date'] = date
+    print 'called'
+
+    all_checkins = MountainCheckin.objects.filter(mountain=mountain)
+    # still need to filter for the selected day
+    # (Django doesn't let you use model methods in querysets, but list comprehensions do ;)
+    checkins = [checkin for checkin in all_checkins if checkin.is_on_day(date) ]
+    context['checkins'] = checkins
+
+    # hidden list of active members that user can search on to enroll
+    active_members = Member.objects.filter(~Q(pass__member_type='TRIP'), pass__season=get_current_season())
+    context['filter_list'] = active_members
+
+
+    return render(request, 'mountains/mountains_view.html', context)
+
+"""
+ * Check member pass in at a mountain
+"""
+def mountains_checkin_add(request, mountain_abbr=None, date=None, active_id=None):
+    context = {'active':'mountains'}
+    mountain = get_object_or_404(Mountain, abbr=mountain_abbr)
+    member_pass = get_object_or_404(Pass, active_id=int(active_id), season=get_current_season())
+
+    checkin = MountainCheckin(member_pass=member_pass, mountain=mountain)
+    checkin.save()
+
+    return redirect('mountains_view', mountain_abbr=mountain_abbr, date=date)
+
+"""
+ * Remove a mountain checkin
+"""
+def mountains_checkin_remove(request, mountain_abbr=None, date=None, checkin_id=None):
+    context = {'active':'mountains'}
+
+    checkin = get_object_or_404(MountainCheckin, pk=int(checkin_id))
+    checkin.delete()
+
+    
+    return redirect('mountains_view', mountain_abbr=mountain_abbr, date=date)
+

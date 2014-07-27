@@ -1,0 +1,100 @@
+   <!-- Add a Trip -->
+  <form class="form-horizontal" role="form" action="{% url 'trips_edit' trip_id=trip.id%}" method="post"> {% csrf_token %}
+    
+    <!-- Name -->
+    <div class="form-group {% if edit_trip_form.name.errors %}has-error{% endif %}">
+      <label for="id_name" class="col-sm-3 control-label">Trip Name</label>
+      <div class="col-sm-8">
+        {{edit_trip_form.name}}
+      </div>
+    </div>
+    <!-- Capacity -->
+    <div class="form-group {% if edit_trip_form.capacity.errors %}has-error{% endif %}">
+      <label for="id_capacity" class="col-sm-3 control-label">Capacity</label>
+      <div class="col-sm-8">
+        {{edit_trip_form.capacity}}
+      </div>
+    </div>
+    <!-- Trip Dates -->
+    <div class="form-group">
+      <label class="col-md-3 control-label">Trip Dates</label>
+      <div class="col-md-8">
+        <div class="form-group row">
+          <div class="col-md-6 datepicker">
+            {{edit_trip_form.start_date}}
+          </div>
+          <div class="col-md-6 datepicker">
+            {{edit_trip_form.end_date}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Payment Dates -->
+    <div class="form-group">
+      <label class="col-md-3 control-label">Payment Due Dates</label>
+      <div class="col-md-8">
+        <div class="form-group row">
+          <div class="col-md-6 datepicker">
+            {{edit_trip_form.down_payment_due}}
+          </div>
+          <div class="col-md-6 datepicker">
+            {{edit_trip_form.final_payment_due}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Pricing -->
+    <div class="form-group">
+      <label class="col-md-3 control-label">Pricing</label>
+      <div class="col-md-8">
+        <div class="form-group row">
+          <div class="col-md-4">
+            {{edit_trip_form.member_price}}
+          </div>
+          <div class="col-md-4">
+            {{edit_trip_form.nonmember_price}}
+          </div>
+          <div class="col-md-4">
+            {{edit_trip_form.other_price}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Destination Address -->
+    <div class="form-group {% if edit_trip_form.destination_address.errors %}has-error{% endif %}">
+      <label for="id_destination_address" class="col-sm-3 control-label">Street</label>
+      <div class="col-sm-8">
+        {{edit_trip_form.destination_address}}
+      </div>
+    </div>
+    <!-- City -->
+    <div class="form-group {% if edit_trip_form.city.errors %}has-error{% endif %}">
+      <label for="id_city" class="col-sm-3 control-label">City</label>
+      <div class="col-sm-8">
+        {{edit_trip_form.city}}
+      </div>
+    </div>
+    <!-- State -->
+    <div class="form-group {% if edit_trip_form.state.errors %}has-error{% endif %}">
+      <label for="id_state" class="col-sm-3 control-label">State</label>
+      <div class="col-sm-8">
+        {{edit_trip_form.state}}
+      </div>
+    </div>
+    <!-- Zip Code -->
+    <div class="form-group {% if edit_trip_form.zip_code.errors %}has-error{% endif %}">
+      <label for="id_zip_code" class="col-sm-3 control-label">Zip Code</label>
+      <div class="col-sm-8">
+        {{edit_trip_form.zip_code}}
+      </div>
+    </div>
+    
+    
+    <!-- Submit -->
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-8">
+        <button type="submit" class="btn btn-default pull-right">Submit</button>
+      </div>
+    </div>
+  </form>  

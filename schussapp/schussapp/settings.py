@@ -38,9 +38,13 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions', # adds extra command line options for ./manage.py
     'localflavor', #used for US-centric forms and data fields like state, zip, phone
-    'south',
+    'south', # used for migrating database and dataschema model changes
+    #'wakawaka', # third party module for wikis (used in the info app)
     'members',
     'busing',
+    'trips',
+    'mountains',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -96,10 +100,16 @@ TEMPLATE_DIRS = (
     #src/static/templates/
 )
 
+# Redirect admin media root so we can mess with the css/js
+#ADMIN_MEDIA_PREFIX= 'http:/localhost:8000/static/static/admin_static/'
+
 if DEBUG:
     MEDIA_URL = '/media/'
     STATIC_ROOT =os.path.join(BASE_DIR, "static", "static-only")
     MEDIA_ROOT = os.path.join(BASE_DIR, "static", "media")
     STATICFILES_DIRS = (
         os.path.join(BASE_DIR, "static", "static"),
+
     )
+
+

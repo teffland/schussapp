@@ -59,6 +59,7 @@ def members_new(request):
 def members_view(request, id="1", active_id=None):
     context = { 'active':'members' }
     context['filter_list'] = Member.objects.all().order_by('last_name')
+    print context['filter_list']    
     
     id = int(id)
     # error if member doesn't exist
@@ -338,6 +339,7 @@ def create_new_member_and_pass( clean_new_member_data ):
     member.save()
     
     ### Create the Pass instance ###
+    # Don't create a pass for Trip-Only Members
     current_season = get_current_season()
     is_reserved = clean_new_member_data['is_reserved']
     # if signed up as reserved, use that reserved id
@@ -358,13 +360,15 @@ def create_new_member_and_pass( clean_new_member_data ):
                     active_id = i # use that empty space
                     break
     
+    if clean_new_member_data['member_type'] == 'TRIP': active_id= None
     member_pass = Pass( member=member, season=current_season,
                         active_id=active_id, is_reserved=is_reserved,
                         member_type=clean_new_member_data['member_type'] )
     # add them to the database
     member_pass.save()
-  
+    
     return member.id
+
 """
 * Take in a cleaned existing member form and edit the member and pass instance associated with it
 * NOTE: This DOES edit the database
@@ -380,11 +384,39 @@ def edit_member_and_pass( clean_edit_member_data ):
     member.save()
     
     ### Edit or Create the Pass instance ###
+    current_season = get_current_season()
     member_pass_set = member.pass_set.filter(season=get_current_season(),lost_stolen=False)
     if (len(member_pass_set) == 1 ):
         member_pass = member_pass_set[0]
+        ##if they are switching from TRIP to a pass give them a number
+        if member_pass.member_type == 'TRIP' and not clean_edit_member_data['member_type'] == 'TRIP':
+          is_reserved = clean_edit_member_data['is_reserved']
+          # if signed up as reserved, use that reserved id
+          if ( is_reserved ):
+              active_id = clean_edit_member_data['reserved_id']
+          # else give them the lowest active id for the season, which is greater than 25
+          # this should fill in holes if someone gets deleted
+          else:
+              pass_set = Pass.objects.filter(season=current_season, active_id__gte=26)
+              active_set = { p.active_id for p in pass_set}
+              if ( len(active_set) == 0 ): active_id = 26 # first non-reserved member of the season
+              else:
+                  active_range = range(26, max(active_set))
+                  active_id = max(active_set) + 1 # set to the max + 1
+                  # unless we find an empty space
+                  for i in active_range:
+                      if i not in active_set: # if we find one in the range, but not in the set
+                          active_id = i # use that empty space
+                          break
+          member_pass.active_id = active_id
+        # if they are switching to TRIP, take away the pass number
+        if not  member_pass.member_type == 'TRIP' and clean_edit_member_data['member_type'] == 'TRIP':
+          member_pass.active_id = None
+        
+        # change the type and save no matter what  
         member_pass.member_type = clean_edit_member_data['member_type']
         member_pass.save()
+
     elif (len(member_pass_set) > 1):
         # TODO: Break for too many current passes
         # for now just bail out gracefully
@@ -412,6 +444,7 @@ def edit_member_and_pass( clean_edit_member_data ):
                         active_id = i # use that empty space
                         break
         
+        if clean_edit_member_data['member_type'] == 'TRIP': active_id = None
         member_pass = Pass( member=member, season=current_season,
                             active_id=active_id, is_reserved=is_reserved,
                             member_type=clean_edit_member_data['member_type'] )

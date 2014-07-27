@@ -1,0 +1,113 @@
+{% extends 'trips/base_trips.html' %}
+
+{% block content %}
+    <div class="container">
+
+      <!--<div class="starter-template">
+        <h1>Trips</h1>
+        <p class="lead">This section will contain the Trips framework and functionality... Someday!</p>
+      </div>-->
+      <div class="row">
+      	<!-- Trip Column -->
+   		<div class="col-lg-7">
+   		  <div class="row">
+            <div class="col-lg-9">
+		      <h2>{{trip.name}}</h2>
+		    </div><!-- /col-4-->
+		    <div class=" col-lg-3" style="padding-top:20px;">
+		      <div class="btn-group ">
+		        <a class="btn btn-default" href="{% url 'trips_edit' trip_id=trip.id %}" >Edit Trip</a>
+		      </div>
+		    </div><!-- /col-4-->
+		  </div>	
+            <p class="hidden" id="trip_id">{{trip.id}}</p>       
+	        <div class="row text-big">
+	          <div class="col-md-6">
+	            <p><strong>Open Seats:</strong> {{trip.n_open_seats}} (out of {{trip.capacity}})</p>
+	            <br>
+		      	<p><strong>Members:</strong> ${{trip.member_price}}</p>
+		      	<p><strong>Non-Members:</strong> ${{trip.nonmember_price}}</p>
+		      	{% if trip.other_price %}
+		      	  <p><strong>Other:</strong> ${{trip.other_price}}</p>
+		      	{% endif %}
+	          </div>
+	          <div class="col-md-6">
+	            <p><strong>Trip Dates:</strong> {{trip.start_date|date:"m/d/y"}} - {{trip.end_date|date:"m/d/y"}}</p>
+	            <br>
+	            <p><strong>Down Payment Due:</strong> {{trip.down_payment_due|date:"m/d/y"}}</p>
+	            <p><strong>Final Payment Due:</strong> {{trip.final_payment_due|date:"m/d/y"}}</p>
+	          </div>
+	        </div>
+	        <br>
+	        <div class="row text-big">
+	        	<div class="col-md-2">
+	     		   	<p><strong>Address:</strong>
+	        	</div>
+	        	<div class="col-md-10">
+		        	<p> {{trip.destination_address}}</p>
+		        	<p> {{trip.city}}{% if trip.state or trip.zip_code %}, {{trip.state}} {{trip.zip_code}} {% endif %}</p>
+	        	</div>
+	        </div>
+
+		    <!-- Trip Table -->
+		    <div class="row">
+		    	<br>
+		    	{% if trip.res_list %}
+		    		<div class="panel panel-default nav-tabs">
+				      <table class="table" >
+				        <thead class="text-center">
+				            <tr>
+				                <th>ID</th>
+				                <th>Pass #</th>
+				                <th>First Name</th>
+				                <th>Last Name</th>
+				                <th>Type</th>
+				                <th>Price Paid</th>
+				            </tr>
+				        </thead>
+				          <tbody class="member text-center"  id="member_table">
+				              {% for res in trip.res_list %} 
+				              {% with res.member_pass as pass %}                
+		                      <tr>
+		                      	  <td class="hidden" id="enroll_id">{{res.id}}</td>
+		                          <td id="id">{{pass.id}}</td>
+		                          <td id="active_id">{{pass.active_id}}</td>
+		                          <td id="first_name">{{pass.member.first_name}}</td>
+		                          <td id="last_name">{{pass.member.last_name}}</td>
+		                          <td id="member_type">{{pass.member_type}}</td>
+		                          <td id="price_paid">${{res.price_paid}}</td>
+		                      </tr>
+		                      {% endwith %}
+				              {% endfor %}
+				          </tbody>
+				        </table>
+				    </div>
+			    	<div class="btn-group pull-right">
+			      		<a class="btn btn-default" onclick="edit_selected_trip_enroll()" >Edit Reservation</a>
+			    	</div>
+
+		    	{% endif %}
+		   	</div>
+		    
+        </div><!-- /col-8-->
+
+       
+        <!-- Member Select Column -->
+		<div class="col-md-5">  
+		  <div class="row">
+		    <h2>Enroll Members</h2>
+		  </div>
+		  <div class="row">
+	        <input type="text" class="form-control" id="search-bar" placeholder="Search Active Members" />
+		  </div>
+		  <br>
+		  {% include 'members/members_table.html' %}
+		  <div class="row">
+		    <div class="btn-group pull-right">
+		      <a class="btn btn-default" onclick="trip_enroll_selected_member()" >Enroll Selected</a>
+		    </div>
+		  </div>
+		</div><!-- /col-->
+      
+    </div><!-- /.container -->
+{% endblock %}

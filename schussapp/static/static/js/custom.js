@@ -88,6 +88,51 @@ function display_selected_bus() {
 }
 
 /**
+ * view the selected trip on click
+*/
+function display_selected_trip() {
+    current_url = document.URL;
+    index = current_url.indexOf("trips");
+    prefix = current_url.substring(0,index);
+    id = $(".selected").children("#id").text();
+    if (id == "") {
+        return;
+    }
+    else {
+        url = prefix + "trips/view/" + id;
+        window.location.href = url;
+    }
+}
+
+/**
+ * Edit a selected trip enrollment from the table
+*/
+function edit_selected_trip_enroll() {
+    enroll_id = $('tr.selected').children('#enroll_id').text();
+    //console.log(enroll_id);
+    current_url = document.URL;
+    index = current_url.indexOf("trips");
+    prefix = current_url.substring(0,index);
+    if (enroll_id !='') {
+        window.location.href = prefix + 'trips/enrollment/edit/' + enroll_id;
+    }
+}
+
+/**
+ * Enroll selected member in trip
+*/
+function trip_enroll_selected_member() {
+    trip_id = $('#trip_id').text();
+    pass_id = $('tr.selected').children('#id').text();
+    //console.log(trip_id+' , '+pass_id);
+    current_url = document.URL;
+    index = current_url.indexOf("trips");
+    prefix = current_url.substring(0,index);
+    if (trip_id !='' && pass_id !='') {
+        window.location.href = prefix + 'trips/enrollment/add/' + pass_id + '/' +trip_id;
+    }
+}
+/**
  * take selected bus number and waiting list member and post a checkin form to that bus
  * by filling in the form for that bus and submitting with jQuery
  * ... probably sketchy
@@ -126,6 +171,27 @@ $('.delete_confirm').confirm({
     confirmButton: "Oh Fur Sure",
     cancelButton: "Hells No"
 });
+
+/**
+ * Check a member in at a mountain
+*/
+function checkin_member_at_mountain() {
+    pass_id = $('#id_pass_num').val();
+    new_url = document.URL + '/add-checkin/' + pass_id;
+    console.log(new_url);
+    window.location.href = new_url;
+}
+
+/**
+ * Remove a selected member
+*/
+function remove_selected_mountain_checkin() {
+    checkin_id = $('#checkin_id').text();
+    //console.log(checkin_id);
+    new_url = document.URL + '/remove-checkin/' + checkin_id;
+    //console.log(new_url);
+    window.location.href = new_url;
+}
 
 
 /**
@@ -259,6 +325,10 @@ $('#pass_flag').tooltip({
  * Attach jQuery datePicker to date form fields with #datePicker id
 */
 $('#id_date').datepicker();
+$('#id_start_date').datepicker();
+$('#id_end_date').datepicker();
+$('#id_down_payment_due').datepicker();
+$('#id_final_payment_due').datepicker();
 $('.datepicker').focusin(function(){
     var pos = $(".datepicker").position();
     //alert(pos);

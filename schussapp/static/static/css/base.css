@@ -60,12 +60,12 @@ body {
 /**
  * Used to create the clickable member list sidebar
 */
-.member tr:hover {
+.member tr:hover, .trip tr:hover {
     background-color: rgba(41, 103, 182, 0.89);
     color: #FFF;
 }
 
-.member tr.selected {
+.member tr.selected, .trip tr.selected {
     background-color: rgba(41, 103, 182, 0.89);
     color: #FFF;
 }
@@ -148,3 +148,8 @@ input[type=radio] {
 .wait_form {
   width:80% !important;
 }
+
+
+/**
+ * Make table entries centered
+*/

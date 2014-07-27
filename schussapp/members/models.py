@@ -107,8 +107,34 @@ class Member(models.Model):
     
     def current_pass_list(self):
         from members.views import get_current_season # import this way to avoid cyclical imports
-        print get_current_season()
-        return self.pass_set.filter(season=get_current_season())
+        #print get_current_season()
+        #get current passes (deals with lost stolen)
+        passes = self.pass_set.filter(season=get_current_season())
+        #if no current passes get all passes
+        if not passes:
+          passes = self.pass_set.all()
+          #if that worked, get just the most recent inactive pass
+          if passes:
+            #print passes
+            passes = [passes[0]]
+          #else they are a trip-only member and have no pass whatsoever
+          else: 
+            pseudo_pass = Pass(member_type='TRIP')
+            print 'Fake Pass', pseudo_pass
+            passes = [pseudo_pass]
+        return passes
+
+    def pass_list(self):
+        passes = self.current_pass_list()
+        #if no current passes get all passes
+        if not passes:
+          passes = self.pass_set.all()
+          #if that worked, get just the most recent inactive pass
+          if passes:
+            #print passes
+            passes = [passes[0]]
+
+        return passes
     
 """
 * The Pass model stores year-specific data about members
@@ -156,7 +182,8 @@ class Pass(models.Model):
                                       help_text="Make Volunteers and Directors have low, reserved pass numbers",
                                       verbose_name="Reserved Number?",
                                       blank=False)
-    active_id = models.PositiveIntegerField(blank=False,
+    active_id = models.PositiveIntegerField(blank=True,
+                                            null=True,
                                             verbose_name='Pass Number for this season')
     member_type = models.CharField(max_length=4,
                                    blank=False,
