@@ -6,6 +6,10 @@ p {
     /*color: rgba(55, 0, 197, 0.43);*/
 }
 
+#sidebar-wrapper {
+    /*margin-top: -50px;*/
+}
+
 .success {
     background: grey;
     text-align: center;
@@ -16,9 +20,22 @@ body {
 }
 
 /*** Menu Bar ***/
+.navbar {
+    border-radius:0px;
+    border:0px;
+    margin-bottom:0px;
+    z-index:1001;
+}
+
+.navbar-inverse .navbar-nav>li>a:hover{
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
 .navbar-inverse {
     background-color: rgba(41, 103, 182, 0.89);
     border-color: #BFE2FF;/*rgba(60, 92, 134, 0.89);*/
+
 }
 /*** Menu Bar Active ***/
 
@@ -30,11 +47,13 @@ body {
 /*** Menu Bar non-active link color ***/
 .navbar-inverse .navbar-nav>li>a, .navbar-inverse .navbar-brand{
     color: #FFF;
+
 }
 /*** active link color ***/
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover,
 .navbar-inverse .navbar-nav>.active>a:focus {
     color: rgba(41, 103, 182, 0.89);
+
 }
 
 .panel-primary>.panel-heading {

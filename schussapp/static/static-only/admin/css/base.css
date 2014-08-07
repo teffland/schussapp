@@ -501,7 +501,7 @@ textarea, select, .vTextField {
     font-size: 11px;
     text-align: left;
     font-weight: bold;
-    background: #7CA0C7 url(../img/default-bg.gif) top left repeat-x;
+    background: rgba(41, 103, 182, 0.89);
     color: white;
 }
 
@@ -783,8 +783,8 @@ table#change-history tbody th {
 /* HEADER */
 
 #header {
-    background: #417690;
-    color: #ffc;
+    background: rgba(41, 103, 182, 0.89);
+    color: #fff;
     overflow: hidden;
 }
 
@@ -801,7 +801,7 @@ table#change-history tbody th {
     font-size: 18px;
     margin: 8px 0;
     font-weight: normal;
-    color: #f4f379;
+    color: #fff;
 }
 
 #branding h2 {

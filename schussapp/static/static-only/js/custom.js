@@ -172,6 +172,27 @@ $('.delete_confirm').confirm({
     cancelButton: "Hells No"
 });
 
+/**
+ * Check a member in at a mountain
+*/
+function checkin_member_at_mountain() {
+    pass_id = $('#id_pass_num').val();
+    new_url = document.URL + '/add-checkin/' + pass_id;
+    console.log(new_url);
+    window.location.href = new_url;
+}
+
+/**
+ * Remove a selected member
+*/
+function remove_selected_mountain_checkin() {
+    checkin_id = $('#checkin_id').text();
+    //console.log(checkin_id);
+    new_url = document.URL + '/remove-checkin/' + checkin_id;
+    //console.log(new_url);
+    window.location.href = new_url;
+}
+
 
 /**
  * This function is used to enable/disable the reserved id select box

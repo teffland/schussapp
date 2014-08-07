@@ -79,6 +79,7 @@ urlpatterns += patterns('info.views',
 ### Admin Site and Wiki Site ###
 urlpatterns += patterns('',
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^ckeditor/', include('ckeditor.urls')),
     #url(r'^wiki/', include('wakawaka.urls')),
 )
 

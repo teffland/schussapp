@@ -65,7 +65,7 @@ class MountainCheckin(models.Model):
         return self.created.date() == date
 
     def __unicode__(self):
-        return self.member_pass.member + ' at ' + self.mountain +' : ' + unicode(self.checkin_time)
+        return unicode(self.member_pass.member) + ' at ' + unicode(self.mountain) +' : ' + unicode(self.created)
 
 """
  * MountainScheduleSlot
@@ -91,6 +91,6 @@ class MountainScheduleSlot(models.Model):
         return now >= self.start_time and now <= self.end_time
 
     def __unicode__(self):
-        return self.mountain + ": " + unicode(self.start_time)+' - '+ unicode(self.end_time)
+        return unicode(self.mountain) + ": " + unicode(self.start_time)+' - '+ unicode(self.end_time)
 
 
