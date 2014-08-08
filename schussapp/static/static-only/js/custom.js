@@ -335,3 +335,28 @@ $('.datepicker').focusin(function(){
     $('#id_date').datepicker('widget').css({top: pos.top+ 110});
 });
 
+/**
+ * Toggles sidebar menu in info section
+**/
+$("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+});
+
+/**
+ * Watch window scrolling for info sidebar so transparencies don't overlap
+*/
+window.onscroll = function()
+{
+     var scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+     //console.log(scrollTop); // uncomment this to see the scrollTop value and you'll see how it increments. 
+     if(scrollTop >= 50) {
+        var sidebarOffset = -50;
+    } else if (scrollTop < 0){
+        return;
+    } else {
+        var sidebarOffset = -scrollTop;
+    }
+     $('#sidebar-wrapper').css('margin-top', sidebarOffset);   
+}
+

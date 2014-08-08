@@ -43,6 +43,10 @@ class ArticleGroup(models.Model):
         articles = Article.objects.filter(article_group=self)
         return articles
 
+    def subgroups(self):
+        subgroups = ArticleGroup.objects.filter(article_group=self)
+        return subgroups
+
     def __unicode__(self):
         return self.name
 

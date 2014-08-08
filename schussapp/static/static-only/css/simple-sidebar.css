@@ -19,18 +19,20 @@
 }
 
 #sidebar-wrapper {
-    z-index: 1000;
+    /*z-index: 1000;*/
     position: fixed;
     left: 250px;
     width: 0;
     height: 100%;
     margin-left: -250px;
     overflow-y: auto;
-    background: #000;
+    background: rgba(41, 103, 182, 0.89);
+    /*
+    transition: all 0.5s ease;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    */
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -49,24 +51,36 @@
 
 /* Sidebar Styles */
 
+/* Make nav sit under top nav */
+ul.sidebar-nav, ul.sidebar {
+    margin-left: 10px;
+    list-style-type: none;
+    padding-left: 5px;
+}
+
 .sidebar-nav {
     position: absolute;
     top: 0;
     width: 250px;
     margin: 0;
     padding: 0;
-    list-style: none;
 }
 
-.sidebar-nav li {
-    text-indent: 20px;
+.sidebar-nav li, .sidebar li {
+    /*text-indent: 10px;*/
     line-height: 40px;
+    transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+
 }
 
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    color: #999999;
+    color: #fff;
+    list-style-type:none;
 }
 
 .sidebar-nav li a:hover {
@@ -121,3 +135,10 @@
         margin-right: 0;
     }
 }
+
+/* Menu toggle button */
+#menu-toggle {
+    z-index:100;
+    position: fixed;
+}
+

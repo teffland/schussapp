@@ -73,7 +73,8 @@ urlpatterns += patterns('stats.views',
 ### Information Links ###
 urlpatterns += patterns('info.views',
     url(r'^info$', 'info_home', name='info_home'),             # information home page                    
-                        
+    #url(r'^info/(?P<group>[\w-]+)$', 'info_home', name='info_home'),             # information home page                                        
+    url(r'^info/(?P<group>[\w-]+)/(?P<article>[\w-]+)$', 'info_home', name='info_home'), 
 )
 
 ### Admin Site and Wiki Site ###

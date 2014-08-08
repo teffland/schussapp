@@ -1,0 +1,32 @@
+<!-- This list recursively generates the tree stucture list representation of the info documents -->
+{% if article_groups %}
+<ul class="sidebar-nav">  
+{% for group in article_groups %}  
+    
+	    {% with group.articles as articles %}
+   		{% with "info/sidebar_list.html" as filename %}  
+    	{% with group.subgroups as article_groups %} 
+    	{% if articles or article_groups %}
+    	<li>
+	    	<a href="javascript:;" data-toggle="collapse" data-target="#demo">{{group.name}} <span class="caret"></span>
+		    </a>  
+	   	        {% include filename %}  
+
+	   	    {% if articles %}
+		    	<ul id="demo" class="collapse sidebar">
+		    	{% for article in articles %}
+		        	<li>
+		         	   <a href="{% url 'info_home' group=group.name|slugify article=article.title|slugify %}">{{article.title}}</a>
+		        	</li>
+		    	{% endfor %}
+				</ul>	
+			{% endif %}
+		</li>  
+		{% endif %}
+    	{% endwith %}
+    	{% endwith %} 
+  		{% endwith %} 
+{% endfor %}  
+</ul>  
+{% endif %}
+

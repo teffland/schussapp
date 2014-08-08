@@ -349,7 +349,7 @@ $("#menu-toggle").click(function(e) {
 window.onscroll = function()
 {
      var scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
-     console.log(scrollTop); // uncomment this to see the scrollTop value and you'll see how it increments. 
+     //console.log(scrollTop); // uncomment this to see the scrollTop value and you'll see how it increments. 
      if(scrollTop >= 50) {
         var sidebarOffset = -50;
     } else if (scrollTop < 0){
@@ -357,6 +357,7 @@ window.onscroll = function()
     } else {
         var sidebarOffset = -scrollTop;
     }
-     $('#sidebar-wrapper').css('margin-top', sidebarOffset);   
+     $('#sidebar-wrapper').css('margin-top', sidebarOffset); 
+     $('#menu-toggle').css('margin-top', sidebarOffset);  
 }
 

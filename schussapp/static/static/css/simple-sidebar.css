@@ -52,9 +52,10 @@
 /* Sidebar Styles */
 
 /* Make nav sit under top nav */
-ul.sidebar-nav {
-    margin-top: 50px;
+ul.sidebar-nav, ul.sidebar {
     margin-left: 10px;
+    list-style-type: none;
+    padding-left: 5px;
 }
 
 .sidebar-nav {
@@ -63,12 +64,10 @@ ul.sidebar-nav {
     width: 250px;
     margin: 0;
     padding: 0;
-    list-style: none;
-
 }
 
-.sidebar-nav li {
-    text-indent: 20px;
+.sidebar-nav li, .sidebar li {
+    /*text-indent: 10px;*/
     line-height: 40px;
     transition: all 0.5s ease;
     -webkit-transition: all 0.5s ease;
@@ -136,3 +135,14 @@ ul.sidebar-nav {
         margin-right: 0;
     }
 }
+
+/* Menu toggle button */
+#menu-toggle {
+    z-index:100;
+    position: fixed;
+    margin-left:-60px;
+    background-color:rgba(41, 103, 182, 0.89);
+    border-color:rgba(41, 103, 182, 0.89);
+    color:#fff;
+}
+
