@@ -8,7 +8,7 @@ from .models import Article, ArticleGroup
 
 class ArticleAdmin(admin.ModelAdmin):
     formfield_overrides = { models.TextField: {'widget': forms.Textarea(attrs={'class':'ckeditor'})}, }
-    fields = ('title', 'article_group', 'author', 'body')
+    fields = ('title', 'article_group', 'author', 'is_published', 'body')
     class Media:
         js = ('ckeditor/ckeditor.js',) # The , at the end of this list IS important.
     
