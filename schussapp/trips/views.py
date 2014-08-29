@@ -8,7 +8,7 @@ from django.db.models import Q
 from trips.models import Trip, TripEnrollment
 from trips.forms import TripForm, TripEnrollmentForm
 
-from members.models import Member, Pass, Season
+from members.models import Member, Pass, Season, MemberType, Price
 from members.views import get_current_season
 
 """
@@ -30,7 +30,10 @@ def trips_view(request, trip_id=None):
   context['trip'] = trip
 
   #get current members
-  context['filter_list'] = Member.objects.filter( ~Q(pass__tripenrollment__trip=trip), pass__season=get_current_season())
+  actives = Pass.objects.filter(season=get_current_season()).order_by('active_id')
+  context['actives'] = actives
+  inactives = Member.objects.filter(~Q(pass__season=get_current_season())).order_by('last_name')
+  context['inactives'] = inactives
 
   return render(request, 'trips/trips_view.html', context)
 
@@ -76,7 +79,7 @@ def trips_edit(request, trip_id=None):
   return render(request, 'trips/trips_edit.html', context)
 
 """
- * 
+ * Remove a trip 
 """
 def trips_remove(request, trip_id=None):
   context = {'active':'trips'}
@@ -106,7 +109,7 @@ def enrollment_add(request, pass_id=None, trip_id=None):
     else:
       context['trip_enroll_form'] = trip_enroll_form
   else:
-    trip_enroll = TripEnrollment.objects.get(member_pass=member_pass, trip=trip)
+    trip_enroll = TripEnrollment.objects.filter(member_pass=member_pass, trip=trip)
     if trip_enroll:
       return redirect('trips_view', trip_id=trip.id)
     else:
@@ -130,7 +133,7 @@ def enrollment_edit(request, enroll_id=None):
       for field, val in trip_enroll_form.cleaned_data.items():
         trip_enroll.__dict__[field] = val
       trip_enroll.save()
-      return redirect('trips_view', trip_id=trip.id)
+      return redirect('print_trip_contract', enroll_id=trip_enroll.id)
 
     else:
       context['edit_enroll_form'] = trip_enroll_form
@@ -140,7 +143,7 @@ def enrollment_edit(request, enroll_id=None):
   return render(request, 'trips/trips_enroll_edit.html', context)
 
 """
- * 
+ * Remove a trip reservation
 """
 def enrollment_remove(request, enroll_id=None):
   context = {'active':'trips'}
@@ -149,6 +152,16 @@ def enrollment_remove(request, enroll_id=None):
   trip_enroll.delete()
   return redirect('trips_view', trip_id=trip.id)
 
-
+"""
+* Print a trip contract
+"""
+def print_trip_contract(request, enroll_id=None):
+  trip_enrollment = get_object_or_404(TripEnrollment, pk=int(enroll_id))
+  context = {'trip_enrollment':trip_enrollment}
+  context['trip'] = trip_enrollment.trip
+  context['pass'] = trip_enrollment.member_pass
+  context['member'] = trip_enrollment.member_pass.member
+  
+  return render(request, 'trips/print_trip_contract.html', context)
 
 

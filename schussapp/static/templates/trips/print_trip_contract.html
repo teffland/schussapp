@@ -1,0 +1,241 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns:st1="urn:schemas-microsoft-com:office:smarttags"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 11">
+<meta name=Originator content="Microsoft Word 11">
+<link rel=File-List href="trips%20contract_files/filelist.xml">
+<link rel=stylesheet href="/static/css/base.css">
+<title>SCHUSSMEISTERS SKI CLUB INC</title>
+<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
+ name="PostalCode"/>
+<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
+ name="State"/>
+<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
+ name="City"/>
+<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
+ name="country-region"/>
+<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
+ name="place"/>
+</head>
+
+<body lang=EN-US style='tab-interval:.5in; background-color:#fff;'>
+
+<div class=Section1>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt; 
+ mso-yfti-tbllook:480;mso-padding-alt:0in 5.4pt 0in 5.4pt;mso-border-insideh:
+ .5pt solid windowtext;mso-border-insidev:.5pt solid windowtext'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;height:.25in'>
+  <td width=590 colspan=2 valign=top style='width:6.15in;border:none;
+  border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt;height:.25in'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>SCHUSSMEISTERS SKI CLUB INC.<o:p></o:p></span></b></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;height:22.5pt'>
+  <td width=382 valign=bottom style='width:286.65pt;border:solid windowtext 1.0pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt;height:44.5pt'>
+  <p class=MsoNormal><st1:country-region w:st="on"><st1:place w:st="on"><b
+    style='mso-bidi-font-weight:normal'><span style='font-size:14.0pt'>{{trip.name}}</span></b></st1:place></st1:country-region><b
+  style='mso-bidi-font-weight:normal'><span style='font-size:14.0pt'> <o:p></o:p></span></b></p>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span
+  style='font-family:Arial'>CONTRACT #</span></b><span style='font-family:Arial'>
+  {{trip_enrollment.id}}<b style='mso-bidi-font-weight:normal'><o:p></o:p></b></span></p>
+  </td>
+  <td width=208 valign=bottom style='width:156.15pt;border:none;border-bottom:
+  solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:
+  solid windowtext .5pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:
+  solid windowtext .5pt;mso-border-bottom-alt:solid windowtext .5pt;padding:
+  0in 5.4pt 0in 5.4pt;height:44.5pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span
+  style='font-family:Arial'>TOTAL:</span></b><span style='font-family:Arial'>
+  ${{trip_enrollment.price_paid}}<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2;height:130.9pt'>
+  <td width=382 valign=top style='width:286.65pt;border:solid windowtext 1.0pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt;height:130.9pt'>
+  <table cellspacing=0 cellpadding=0 border=0>
+   <tr>
+    <td width=50%>
+     <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span style='font-family:Arial'>Address:</span></b></p>
+     <p class=MsoNormal><span style='font-family:Arial'>{{member.first_name}} {{member.last_name}}</span></p>
+     <p class=MsoNormal><span style='font-family:Arial'>{{member.local_address}}</span></p>
+     <p class=MsoNormal><span style='font-family:Arial'>{{member.city}}, {{member.state}} {{member.zip_code}}</span></p>
+
+
+<p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span
+     style='font-family:Arial'>EMAIL:</span></b><span style='font-family:Arial'> {{member.email}}</span></p>
+    </td>
+
+    <td>
+     <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span
+       style='font-family:Arial'>PHONE:</span></b><span style='font-family:Arial'> {{member.phone}}<o:p></o:p></span></p>
+     <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span
+      style='font-family:Arial'>AFFILIATION:</span></b><span style='font-family:
+      Arial'> {% if pass.member_type == "TRIP" %}Trip-Only{% else %} Member {% endif %}<o:p></o:p></span></p>
+     <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span
+      style='font-family:Arial'>DOB:</span></b><span style='font-family:Arial'>
+     {{member.birthday}}<o:p></o:p></span></p>
+     <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span
+     style='font-family:Arial'>SEX:</span></b><span style='font-family:Arial'> {{member.gender}}</span></p>
+
+
+    </td>
+   </tr>
+  </table>
+  <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span style='font-family:Arial'>Emergency Contact:</span></b></p>
+  <table cellspacing=0 cellpadding=0 border=0>
+   <tr>
+    <td width=35%>
+     <p class=MsoNormal><span style='font-family:Arial'><span style='mso-tab-count: 3'></span>Name:</span></p>
+    </td>
+    <td>
+     <p class=MsoNormal><span style='font-family:Arial'><span style='mso-tab-count: 3'></span>_________________________</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <p class=MsoNormal><span style='font-family:Arial'><span style='mso-tab-count: 3'></span>Relation:</span></p>
+    </td>
+    <td>
+     <p class=MsoNormal><span style='font-family:Arial'><span style='mso-tab-count: 3'></span>_________________________</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <p class=MsoNormal><span style='font-family:Arial'><span style='mso-tab-count: 3'></span>Phone:</span></p>
+    </td>
+    <td>
+     <p class=MsoNormal><span style='font-family:Arial'><span style='mso-tab-count: 3'></span>_________________________</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td colspan=2>&nbsp;</td>
+   </tr>
+   <tr>
+    <td>
+     <p class=MsoNormal><span style='font-family:Arial'><span style='mso-tab-count: 3'></span>T-Shirt Size:</span></p>
+    </td>
+    <td>
+     <p class=MsoNormal><span style='font-family:Arial'><span style='mso-tab-count: 3'></span>_________________________</span></p>
+    </td>
+   </tr>
+  </table>
+  <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width=208 rowspan=3 valign=top style='width:156.15pt;border:none;
+  border-bottom:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
+  mso-border-left-alt:solid windowtext .5pt;mso-border-top-alt:solid windowtext .5pt;
+  mso-border-left-alt:solid windowtext .5pt;mso-border-bottom-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt;height:130.9pt'>
+  <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:3;height:57.1pt'>
+  <td width=382 height="172" valign=top style='width:286.65pt;border:solid windowtext 1.0pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt;height:57.1pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span
+  style='font-family:Arial'><o:p>&nbsp;</o:p></span></b></p>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span
+  style='font-family:Arial'>ROOMMATE <o:p></o:p></span></b><b style='mso-bidi-font-weight:normal'><span
+  style='font-family:Arial'>PREFERENCE:<span style='mso-tab-count:1'></span></span></b></p>
+  <p class=MsoNormal><span style='font-family:Arial'><span style='mso-tab-count:
+  3'></span>________________________________<o:p></o:p></span></p>
+  <p class=MsoNormal><span style='font-family:Arial'><span style='mso-tab-count:
+  3'></span>________________________________<o:p></o:p></span></p>
+  <p class=MsoNormal><span style='font-family:Arial'><o:p></o:p></span></p>
+  <p class=MsoNormal><span style='font-family:Arial'><o:p><br>
+  </o:p></span><span style='font-family:Arial'><o:p></o:p></span></p></td>
+ </tr>
+ <tr style='mso-yfti-irow:4;height:243.85pt'>
+  <td width=382 valign=top style='width:286.65pt;border:solid windowtext 1.0pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt;height:243.85pt'>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span
+  style='font-family:Arial'><o:p><span style='text-decoration:none'>&nbsp;</span></o:p></span></b></p>
+  <p class=MsoNormal><b style='mso-bidi-font-weight:normal'><u><span
+  style='font-family:Arial'>Cancellation/Final Payment Information:<o:p></o:p></span></u></b></p>
+  <p class=MsoNormal style='text-align:justify'><span style='font-family:Arial'>If
+  you must cancel your reservation, REFUND REQUESTS MUST BE SUBMITTED IN
+  WRITING to the Board of Directors. Your right to receive a refund is limited
+  to approval by the Board of Directors.<o:p></o:p></span></p>
+  
+  <p class=MsoNormal style='text-align:justify'><b style='mso-bidi-font-weight:
+  normal'><span style='font-family:Arial'>FINAL PAYMENT DUE:</span></b><span
+  style='font-family:Arial'> <b style='mso-bidi-font-weight:normal'><u>{{trip.final_payment_due|date:"m/d/y"}}<o:p></o:p></u></b></span></p>
+  <p class=MsoNormal style='text-align:justify'><b style='mso-bidi-font-weight:
+  normal'><span style='font-family:Arial'><o:p><span style='text-decoration:
+   none'>&nbsp;</span></o:p></span></b></p>
+  <p class=MsoNormal style='text-align:left'><span style='font-family:Arial'>Received
+  by: __________<span style='mso-tab-count:2'></span> &nbsp;&nbsp;&nbsp;Date:
+  ___________<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:4;height:1.7pt'>
+  <td width=590 colspan=2 valign=top style='width:6.15in;border:solid windowtext 1.0pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  border-right:none;padding:0in 5.4pt 0in 5.4pt;'>
+   <p class=MsoNormal style='text-align:center'><span style='font-family:Arial'>
+     I have read and understand the stated cancellation, final payment and refund policy and agree to these terms.
+   </span></p>
+   <p class=MsoNormal align=center style='text-align:center'><o:p>&nbsp;</o:p></p>
+   <table cellspacing="0" cellpadding="0" border="0">
+     <tr>
+       <td style='width:3.25in;text-align:center;' valign=top>
+        X___________________________
+       </td>
+       <td style='width:3.25in;text-align:center;' valign=top>
+        X___________________________
+       </td>
+     </tr>
+     <tr>
+      <td style='text-align:center;' valign=top>
+        Signature of Applicant
+      </td>
+      <td style='text-align:center' valign=top>
+        Signature of Parent of Guardian<br />
+        (if Applicant under 18 years of age).
+      </td>
+     </tr>
+   </table>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:5;mso-yfti-lastrow:yes;height:1.7pt'>
+  <td width=590 colspan=2 valign=top style='width:6.15in;border:none;
+  mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt;
+  height:1.7pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></b></p>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span style='font-family:Arial'>360
+  STUDENT UNION SUNY AB <st1:place w:st="on"><st1:City w:st="on">BUFFALO</st1:City>,
+   <st1:State w:st="on">NY</st1:State> <st1:PostalCode w:st="on">14260</st1:PostalCode></st1:place><o:p></o:p></span></b></p>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span style='font-family:Arial'>PHONE
+  (716) 645-3100<o:p></o:p></span></b></p>
+  <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+</div>
+
+</body>
+
+</html>

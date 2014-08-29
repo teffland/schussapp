@@ -15,6 +15,10 @@ p {
     text-align: center;
 }
 
+p.msonormal {
+    margin:0px;
+}
+
 body {
     background-color: #BFE2FF;
 }

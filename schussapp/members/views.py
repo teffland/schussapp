@@ -1,7 +1,8 @@
 # django imports
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib import messages
-from django.http import Http404
+from django.http import Http404, HttpResponse
+from django.db.models import Q
 
 # model imports
 from members.models import Member, Pass, Season
@@ -11,6 +12,10 @@ from datetime import datetime, date
 
 # form imports
 from members.forms import NewMemberForm, EditMemberForm, LostStolenForm, BusFlagForm, PassFlagForm
+
+# for reading in binary images
+from PIL import Image
+import StringIO
 
 # This file tells Django how to actually render the pages for all membership pages
 ### HOMEPAGE FOR WHOLE SITE ###
@@ -23,9 +28,11 @@ def home(request):
 ### HOMEPAGE FOR MEMBERS ###
 def members_home(request):
     context = { 'active':'members' }
-    context['filter_list'] = Member.objects.all().order_by('last_name')
-    print context['filter_list']
 
+    actives = Pass.objects.filter(season=get_current_season()).order_by('active_id')
+    context['actives'] = actives
+    inactives = Member.objects.filter(~Q(pass__season=get_current_season())).order_by('last_name')
+    context['inactives'] = inactives
     return render(request, 'members/members_home.html', context)
 
 """
@@ -33,8 +40,11 @@ def members_home(request):
 """
 def members_new(request):
     context = { 'active':'members' }
-    context['filter_list'] = Member.objects.all().order_by('last_name')
-    print context['filter_list']
+    actives = Pass.objects.filter(season=get_current_season()).order_by('active_id')
+
+    context['actives'] = actives
+    inactives = Member.objects.filter(~Q(pass__season=get_current_season())).order_by('last_name')
+    context['inactives'] = inactives
 
     # if form was submitted
     if (request.method == 'POST'):
@@ -58,8 +68,11 @@ def members_new(request):
 """
 def members_view(request, id="1", active_id=None):
     context = { 'active':'members' }
-    context['filter_list'] = Member.objects.all().order_by('last_name')
-    print context['filter_list']    
+    actives = Pass.objects.filter(season=get_current_season()).order_by('active_id')
+
+    context['actives'] = actives
+    inactives = Member.objects.filter(~Q(pass__season=get_current_season())).order_by('last_name')
+    context['inactives'] = inactives
     
     id = int(id)
     # error if member doesn't exist
@@ -67,7 +80,7 @@ def members_view(request, id="1", active_id=None):
     member = get_object_or_404(Member, pk=id)
     print member
     context['member'] = member
-
+    context['photo'] = True
     # if we're asking for specific active id, use that one (must be current though)
     if(active_id):
         pass_set = member.pass_set.filter(active_id=active_id, season=get_current_season())
@@ -77,10 +90,17 @@ def members_view(request, id="1", active_id=None):
         # if we have more than one pass with that id, the most recent will be used
         member_pass = pass_set[0]
         context['pass'] = member_pass
+        #context['photo'] = member_pass.photo
         # find the verbose name of that type
-        member_type = get_verbose_choice(member_pass.member_type , NewMemberForm.TYPE_CHOICES)
-        context['verbose_member_type'] = member_type[0]
-        context['verbose_member_subtype'] = member_type[1]
+        member_type = member_pass.member_type#get_verbose_choice(member_pass.member_type , NewMemberForm.TYPE_CHOICES)
+        if member_type.parent_type:
+            context['verbose_member_type'] = member_type.parent_type
+            context['verbose_member_subtype'] = member_type.member_type
+        else:
+            context['verbose_member_type'] = member_type.member_type
+        #member_type = get_verbose_choice(member_pass.member_type , NewMemberForm.TYPE_CHOICES)
+        #context['verbose_member_type'] = member_type[0]
+        #context['verbose_member_subtype'] = member_type[1]
         
     # if we didn't ask for a pass number, get this years if it exists
     else:
@@ -90,9 +110,12 @@ def members_view(request, id="1", active_id=None):
             member_pass = pass_set[0]
             context['pass'] = member_pass
             # find the verbose name of that type
-            member_type = get_verbose_choice(member_pass.member_type , NewMemberForm.TYPE_CHOICES)
-            context['verbose_member_type'] = member_type[0]
-            context['verbose_member_subtype'] = member_type[1]
+            member_type = member_pass.member_type#get_verbose_choice(member_pass.member_type , NewMemberForm.TYPE_CHOICES)
+            if member_type.parent_type:
+                context['verbose_member_type'] = member_type.parent_type
+                context['verbose_member_subtype'] = member_type.member_type
+            else:
+                context['verbose_member_type'] = member_type.member_type
         # else we never found a pass for this year and the member is inactive
         else:
             context['verbose_member_type'] = 'Inactive'
@@ -111,11 +134,60 @@ def members_view(request, id="1", active_id=None):
     return render(request, 'members/members_view.html', context)
 
 """
+* A view that returns the most recent image for a given member id
+* It's necessary to allow the <img> html tag to gte the image appropriately
+"""
+def headshot(request, member_id=None):
+    member = get_object_or_404(Member, pk=int(member_id))
+    
+    photo = member.photo
+    newest_pass = member.newest_pass()
+    if newest_pass:
+        photo = newest_pass.photo 
+    image = Image.open(StringIO.StringIO(photo))
+    response = HttpResponse(mimetype="image/jpeg")
+    image.save(response, "JPEG")
+    return response
+
+"""
+* Generate the print card
+"""
+def members_print_card(request, id=None):
+    member_pass = get_object_or_404(Pass, pk=int(id))
+    member = member_pass.member
+    context = {'pass': member_pass}
+    # find the verbose name of that type
+    member_type = member_pass.member_type#get_verbose_choice(member_pass.member_type , NewMemberForm.TYPE_CHOICES)
+    if member_type.parent_type:
+        context['verbose_member_type'] = member_type.parent_type
+        context['verbose_member_subtype'] = member_type.member_type
+    else:
+        context['verbose_member_type'] = member_type.member_type
+    #member_type = get_verbose_choice(member_pass.member_type , NewMemberForm.TYPE_CHOICES)
+    #context['verbose_member_type'] = member_type[0]
+    #context['verbose_member_subtype'] = member_type[1]
+    # get the verbose dorm name, if it exists
+    dorm = get_verbose_choice(member.dorm , NewMemberForm.DORM_CHOICES)
+    if (dorm[0]):
+        verbose_dorm = dorm[0]  + " - " + dorm[1]
+        context['verbose_dorm_type'] = verbose_dorm
+    else: context['verbose_dorm_type'] = 'None'
+    # generate a verbose gender name (because the 'get_verbose_choice' isn't robust enough)
+    if( member.gender == 'M'): gender = 'Male'
+    else: gender = 'Female'
+    context['verbose_gender'] = gender
+    return render(request, 'members/members_print_card.html', context)
+
+"""
 * Edit the information about a given member
 """
 def members_edit(request, id="1"):
     context = { 'active':'members' }
-    context['filter_list'] = Member.objects.all().order_by('last_name')
+    actives = Pass.objects.filter(season=get_current_season()).order_by('active_id')
+
+    context['actives'] = actives
+    inactives = Member.objects.filter(~Q(pass__season=get_current_season())).order_by('last_name')
+    context['inactives'] = inactives
     id=int(id)
     context['member_id'] = id
     # if form was submitted
@@ -160,7 +232,11 @@ def members_edit(request, id="1"):
 """
 def members_unenroll_pass(request, id="1"):
     context = { 'active':'members' }
-    context['filter_list'] = Member.objects.all().order_by('last_name')
+    actives = Pass.objects.filter(season=get_current_season()).order_by('active_id')
+
+    context['actives'] = actives
+    inactives = Member.objects.filter(~Q(pass__season=get_current_season())).order_by('last_name')
+    context['inactives'] = inactives
     id=int(id)
     member = get_object_or_404( Member, pk=id)
     context['member'] = member
@@ -178,7 +254,11 @@ def members_unenroll_pass(request, id="1"):
 """
 def members_remove_member(request, id="1" ):
     context = { 'active':'members' }
-    context['filter_list'] = Member.objects.all().order_by('last_name')
+    actives = Pass.objects.filter(season=get_current_season()).order_by('active_id')
+
+    context['actives'] = actives
+    inactives = Member.objects.filter(~Q(pass__season=get_current_season())).order_by('last_name')
+    context['inactives'] = inactives
     id=int(id)
     member = get_object_or_404(Member, pk=id)
     context['first_name'] = member.first_name
@@ -192,7 +272,11 @@ def members_remove_member(request, id="1" ):
 """
 def members_lost_stolen(request, id="1", active_id=None ):
     context = { 'active':'members' }
-    context['filter_list'] = Member.objects.all().order_by('last_name')
+    actives = Pass.objects.filter(season=get_current_season()).order_by('active_id')
+
+    context['actives'] = actives
+    inactives = Member.objects.filter(~Q(pass__season=get_current_season())).order_by('last_name')
+    context['inactives'] = inactives
     id=int(id)
     member = get_object_or_404(Member, pk=id)
     context['member'] = member
@@ -241,7 +325,11 @@ def members_lost_stolen(request, id="1", active_id=None ):
 """
 def members_bus_flag(request, id="1", active_id=None ):
     context = { 'active':'members' }
-    context['filter_list'] = Member.objects.all().order_by('last_name')
+    actives = Pass.objects.filter(season=get_current_season()).order_by('active_id')
+
+    context['actives'] = actives
+    inactives = Member.objects.filter(~Q(pass__season=get_current_season())).order_by('last_name')
+    context['inactives'] = inactives
     id=int(id)
     member = get_object_or_404(Member, pk=id)
     context['first_name'] = member.first_name
@@ -283,7 +371,11 @@ def members_bus_flag(request, id="1", active_id=None ):
 """
 def members_pass_flag(request, id="1", active_id=None ):
     context = { 'active':'members' }
-    context['filter_list'] = Member.objects.all().order_by('last_name')
+    actives = Pass.objects.filter(season=get_current_season()).order_by('active_id')
+
+    context['actives'] = actives
+    inactives = Member.objects.filter(~Q(pass__season=get_current_season())).order_by('last_name')
+    context['inactives'] = inactives
     id=int(id)
     member = get_object_or_404(Member, pk=id)
     context['first_name'] = member.first_name
@@ -360,10 +452,12 @@ def create_new_member_and_pass( clean_new_member_data ):
                     active_id = i # use that empty space
                     break
     
-    if clean_new_member_data['member_type'] == 'TRIP': active_id= None
+    if clean_new_member_data['member_type'].member_type == "TRIP": active_id= None
     member_pass = Pass( member=member, season=current_season,
                         active_id=active_id, is_reserved=is_reserved,
-                        member_type=clean_new_member_data['member_type'] )
+                        member_type=clean_new_member_data['member_type'],
+                        price_paid=get_price_paid(clean_new_member_data['member_type']),
+                        photo=member.photo)
     # add them to the database
     member_pass.save()
     
@@ -410,7 +504,7 @@ def edit_member_and_pass( clean_edit_member_data ):
                           break
           member_pass.active_id = active_id
         # if they are switching to TRIP, take away the pass number
-        if not  member_pass.member_type == 'TRIP' and clean_edit_member_data['member_type'] == 'TRIP':
+        if not  member_pass.member_type.member_type == 'TRIP' and clean_edit_member_data['member_type'].member_type == 'TRIP':
           member_pass.active_id = None
         
         # change the type and save no matter what  
@@ -444,10 +538,19 @@ def edit_member_and_pass( clean_edit_member_data ):
                         active_id = i # use that empty space
                         break
         
-        if clean_edit_member_data['member_type'] == 'TRIP': active_id = None
+        if clean_edit_member_data['member_type'].member_type == 'TRIP': active_id = None
+        # figure out which photo to use
+        photo = member.photo
+        newest_pass = member.newest_pass()
+        if newest_pass:
+            photo = newest_pass.photo 
+        price = get_price_paid(clean_edit_member_data['member_type'])
+        print(price)
         member_pass = Pass( member=member, season=current_season,
                             active_id=active_id, is_reserved=is_reserved,
-                            member_type=clean_edit_member_data['member_type'] )
+                            member_type=clean_edit_member_data['member_type'],
+                            price_paid=price,
+                            photo=photo )
         # add them to the database
         member_pass.save()
   
@@ -463,6 +566,24 @@ def get_current_season():
         if season.is_current():
             return season
     
+"""
+* Returns the price for a given date of sign up and member type
+"""
+def get_price_paid(member_type):
+    if member_type.parent_type:
+        price_list = member_type.parent_type.price_set.all()
+    else:
+        price_list = member_type.price_set.all()
+    
+    #print price_list
+    today = date.today()
+    for price in price_list:
+        #print price.start_date, today, price.end_date
+        if price.start_date <= today and price.end_date >= today:
+            #print price.price
+            return int(price.price)
+    return 0
+
 """
 * Converts member type attribute short version into verbose text for display
 * Currently this is pretty hacked up, and only works with the DORM and MEMBER choice lists

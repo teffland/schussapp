@@ -1,10 +1,10 @@
   <!-- Table -->
-
+{% load cache %}
     <div class="row panel panel-default nav-tabs">
       <table class="table" >
         <thead class="text-center">
             <tr>
-                <th>ID</th>
+                <!--<th>ID</th>-->
                 <th>Pass #</th>
                 <th>First Name</th>
                 <th>Last Name</th>
@@ -16,27 +16,48 @@
       </table>
       <div class="scrollable" style="max-height:325px; height:auto;">
         <table class="table">
-          <tbody class="member text-center"  id="member_table">
-              {% for member in filter_list %}
-                
-                  {% for pass in member.pass_list %}
-                  
-                      <tr>
-                          <td id="id">{{member.id}}</td>
-                          <td id="active_id">{% if pass.active_id and pass.season.is_current %}{{pass.active_id}}{% endif %}</td>
-                          <td id="first_name">{{member.first_name}}</td>
-                          <td id="last_name">{{member.last_name}}</td>
-                          <td id="member_type">{{pass.member_type}}</td>
-                          <td id="is_current">{{pass.season.is_current|yesno|capfirst}}</td>
-                          <td id="is_flagged">
-                            {% if pass.lost_stolen %}LS{% endif%}
-                            {% if pass.bus_flag %}{% if pass.lost_stolen %},{% endif %}BF{% endif%}
-                            {% if pass.pass_flag %}{% if pass.lost_stolen or pass.bus_flag %},{% endif %}PF{% endif%}
-                          </td>
-                          <!-- Hidden elements of table, used for jQuery to filter display of rows on -->
-                          <td id="email" class="hidden">{{member.email}}</td>
-                      </tr>
-                  {% endfor %}
+        <thead class="text-center hidden">
+            <tr>
+                <!--<th>ID</th>-->
+                <th>Pass #</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Type</th>
+                <th>Active</th>
+                <th>Flags</th>
+            </tr>
+        </thead>
+          <tbody class="member"  id="member_table">
+              {% for pass in actives %}
+	      <tr>
+		  <td id="id" class="hidden">{{pass.member.id}}</td>
+		  <td id="pass_id" class="hidden">{{pass.id}}</td>
+		  <td id="active_id">{% if pass.active_id %}{{pass.active_id}}{% endif %}</td>
+		  <td id="first_name">{{pass.member.first_name}}</td>
+		  <td id="last_name">{{pass.member.last_name}}</td>
+		  <td id="member_type">{{pass.member_type.type_abbr}}</td>
+		  <td id="is_current">{{pass.season.is_current|yesno|capfirst}}</td>
+		  <td id="is_flagged">
+		    {% if pass.lost_stolen %}LS{% endif%}
+		    {% if pass.bus_flag %}{% if pass.lost_stolen %},{% endif %}BF{% endif%}
+		    {% if pass.pass_flag %}{% if pass.lost_stolen or pass.bus_flag %},{% endif %}PF{% endif%}
+		  </td>
+		  <!-- Hidden elements of table, used for jQuery to filter display of rows on -->
+		  <td id="email" class="hidden">{{pass.member.email}}</td>
+	      </tr>
+              {% endfor %}
+              {% for member in inactives %}
+	      <tr>
+		  <td id="id" class="hidden">{{member.id}}</td>
+		  <td id="active_id"></td>
+		  <td id="first_name">{{member.first_name}}</td>
+		  <td id="last_name">{{member.last_name}}</td>
+		  <td id="member_type">None</td>
+		  <td id="is_current">No</td>
+		  <td id="is_flagged"></td>
+		  <!-- Hidden elements of table, used for jQuery to filter display of rows on -->
+		  <td id="email" class="hidden">{{member.email}}</td>
+	      </tr>
               {% endfor %}
           </tbody>
         </table>

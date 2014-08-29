@@ -13,6 +13,8 @@ urlpatterns = patterns('members.views',
     url(r'^membership$', 'members_home', name='members_home'),    # membership home page
     url(r'^membership/new$', 'members_new', name='members_new'),  # new members page
     url(r'^membership/view/(?P<id>\d{1,5})$', 'members_view', name='members_view'),  # view members page
+    url(r'^membership/print/(?P<id>\d{1,5})$', 'members_print_card', name='members_print_card'),  # view members page
+    url(r'^image/jpeg/(?P<member_id>\d{1,5})$', 'headshot', name='headshot'),  # view members page
     url(r'^membership/view/(?P<id>\d{1,5})/(?P<active_id>\d{1,5})$', 'members_view', name='members_view'),  # view members page with pass num posted
     url(r'^membership/edit/(?P<id>\d{1,5})$', 'members_edit', name='members_edit'),  # edit members page
     url(r'^membership/unenroll/(?P<id>\d{1,5})$', 'members_unenroll_pass', name='members_unenroll_pass'),  # unenroll active member
@@ -60,6 +62,7 @@ urlpatterns += patterns('trips.views',
     url(r'^trips/remove/(?P<trip_id>\d{1,5})$', 'trips_remove', name='trips_remove'),  # remove a trip page
     url(r'^trips/enrollment/add/(?P<pass_id>\d{1,5})/(?P<trip_id>\d{1,5})$', 'enrollment_add', name='enrollment_add'), # edit an trip enrollment
     url(r'^trips/enrollment/edit/(?P<enroll_id>\d{1,5})$', 'enrollment_edit', name='enrollment_edit'), # edit an trip enrollment
+    url(r'^trips/enrollment/print/(?P<enroll_id>\d{1,5})$', 'print_trip_contract', name='print_trip_contract'), # edit an trip enrollment
     url(r'^trips/enrollment/remove/(?P<enroll_id>\d{1,5})$', 'enrollment_remove', name='enrollment_remove') # remove an trip enrollment
                         
 )

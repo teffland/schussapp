@@ -140,5 +140,9 @@ ul.sidebar-nav, ul.sidebar {
 #menu-toggle {
     z-index:100;
     position: fixed;
+    margin-left:-60px;
+    background-color:rgba(41, 103, 182, 0.89);
+    border-color:rgba(41, 103, 182, 0.89);
+    color:#fff;
 }
 

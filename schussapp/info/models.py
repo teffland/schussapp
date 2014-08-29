@@ -24,7 +24,7 @@ class Article(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
-    is_published = models.BinaryField()
+    is_published = models.BooleanField()
 
     def __unicode__(self):
         return self.title + ' (' + unicode(self.article_group)+ ')'

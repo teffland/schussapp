@@ -20,8 +20,10 @@ from datetime import date, datetime
 """
 def busing_home(request, date=datetime.strftime(date.today(), '%Y-%m-%d')):
     context= {'active':'busing'}
-    active_members = Member.objects.filter(pass__season=get_current_season())
-    context['filter_list'] = active_members
+    actives = Pass.objects.filter(season=get_current_season()).order_by('active_id')
+    context['actives'] = actives
+    inactives = Member.objects.filter(~Q(pass__season=get_current_season())).order_by('last_name')
+    context['inactives'] = inactives
     date = datetime.strptime(date, '%Y-%m-%d').date()  # format input date as date object
     context['date'] = date
     context['today_list'] = Bus.objects.filter( ~Q(number=WAIT_LIST_NUM), date=date) #exclude wait list

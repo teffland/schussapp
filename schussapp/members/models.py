@@ -1,6 +1,8 @@
 from django.db import models
+from caching.base import CachingManager, CachingMixin
 from localflavor.us.models import USStateField, PhoneNumberField
 from datetime import datetime, date
+from django.core.exceptions import ObjectDoesNotExist
 
 
 """
@@ -9,7 +11,8 @@ from datetime import datetime, date
 * A Member can only have one pass for any pass season
 * unless the pass has been flagged as Lost or Stolen.
 """
-class Member(models.Model):
+class Member(CachingMixin, models.Model):
+    #objects = CachingManager()
     ### DORM CHOICES LIST ###
     # TODO: Complete the dorm choices
     DORM_CHOICES = (
@@ -120,7 +123,7 @@ class Member(models.Model):
           #else they are a trip-only member and have no pass whatsoever
           else: 
             pseudo_pass = Pass(member_type='TRIP')
-            print 'Fake Pass', pseudo_pass
+            #print 'Fake Pass', pseudo_pass
             passes = [pseudo_pass]
         return passes
 
@@ -135,6 +138,13 @@ class Member(models.Model):
             passes = [passes[0]]
 
         return passes
+  
+    def newest_pass(self):
+        passes = self.pass_set.all()
+        if passes:
+            return passes[0]
+        else:
+            return False
     
 """
 * The Pass model stores year-specific data about members
@@ -143,7 +153,8 @@ class Member(models.Model):
 * This allows for Lost/Stolen to be done easily
 * This also allows us to track the evolution of a person throughout the club
 """
-class Pass(models.Model):
+class Pass(CachingMixin, models.Model):
+    #objects = CachingManager()
     ### PASS TYPE CHOICES LIST ###
     TYPE_CHOICES = (
         ('UB-Student', (
@@ -178,6 +189,14 @@ class Pass(models.Model):
     ### TABLE ATTRIBUTES ###
     member = models.ForeignKey('Member')
     season = models.ForeignKey('Season')
+    price_paid = models.PositiveIntegerField(default=0)
+    # Photos
+    # user photos are captured by the ID program and stored as binaries I think...
+    # in general, this is bad practice and the photos shoud be saved as images in a directory.
+    # however, I'm unsure about that fix at the moment
+    # not required
+    photo = models.BinaryField(blank=True,
+                               null=True)
     is_reserved = models.BooleanField(default=False,
                                       help_text="Make Volunteers and Directors have low, reserved pass numbers",
                                       verbose_name="Reserved Number?",
@@ -185,6 +204,8 @@ class Pass(models.Model):
     active_id = models.PositiveIntegerField(blank=True,
                                             null=True,
                                             verbose_name='Pass Number for this season')
+    member_type = models.ForeignKey('MemberType') 
+    """
     member_type = models.CharField(max_length=4,
                                    blank=False,
                                    choices=TYPE_CHOICES,
@@ -192,6 +213,7 @@ class Pass(models.Model):
                                    db_column='type',
                                    help_text='Make sure to get the type correctly, as it determines the price',
                                    verbose_name='Member Pass Type')
+    """
     lost_stolen = models.BooleanField(default=False)
     lost_stolen_note = models.TextField(blank=True)
     bus_flag = models.BooleanField(default=False)
@@ -202,6 +224,12 @@ class Pass(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     
+    def is_season_current(self):
+        try:
+            return self.season.is_current()
+        except ObjectDoesNotExist:
+            return False
+
     def __unicode__(self):
         return unicode(self.active_id)+": "+self.member.first_name + " " + self.member.last_name +", " + unicode(self.season)    
     
@@ -229,4 +257,60 @@ class Season(models.Model):
     def __unicode__(self):
         return unicode(self.fall.year) + '-' + unicode(self.spring.year)
     
-    
+"""
+* Member Type
+"""
+class MemberType(models.Model):
+    parent_type = models.ForeignKey('MemberType', blank=True, null=True)
+    member_type = models.CharField(max_length=50)
+    type_abbr = models.CharField(max_length=4)
+
+    def __unicode__(self):
+        if self.parent_type:
+            return self.parent_type.member_type +': '+ self.type_abbr + ' - '+self.member_type   
+        else:
+            return self.type_abbr + ' - ' + self.member_type
+
+"""
+* Price
+* One interval of pricing associated a MemberType
+"""
+class Price(models.Model):
+    member_type = models.ForeignKey('MemberType')
+    start_date = models.DateField()
+    end_date = models.DateField()
+    price = models.PositiveIntegerField()
+
+    def __unicode__(self):
+        return unicode(self.member_type)+ ' - ' + unicode(self.price)
+"""
+    TYPE_CHOICES = (
+        ('UB-Student', (
+            ('FR' , 'Freshman'),
+            ('SO' , 'Sophomore'),
+            ('JR' , 'Junior'),
+            ('SR', 'Senior'),
+            ('SU', 'Super-Senior'),
+          )
+        ),
+        ('Non-UB-Student', (
+            # TODO: Fill this in with more local schools
+            ('BS', 'Buffalo State'),
+            ('ECC', 'Erie Community College'),
+            ('CAN', 'Canisius College'),
+            ('MED', 'Medaille College'),
+            ('DAE', 'Daemon University'),
+            ('NCCC', 'Niagara County Community College'),
+          )
+        ),
+        ('Fac-Staff-Alum', (
+            ('FAC', 'Faculty'),
+            ('STA', 'Staff'),
+            ('ALU', 'Alumni'),
+          )
+        ),
+        ('FAM', 'Family'), # Family doesn't have a subtype
+        ('VIP', 'Director/VIP'),
+        ('TRIP', 'Trip-Only Member'),
+    )
+"""

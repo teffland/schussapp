@@ -123,8 +123,8 @@ function edit_selected_trip_enroll() {
 */
 function trip_enroll_selected_member() {
     trip_id = $('#trip_id').text();
-    pass_id = $('tr.selected').children('#id').text();
-    //console.log(trip_id+' , '+pass_id);
+    pass_id = $('tr.selected').children('#pass_id').text();
+    console.log(trip_id+' , '+pass_id);
     current_url = document.URL;
     index = current_url.indexOf("trips");
     prefix = current_url.substring(0,index);

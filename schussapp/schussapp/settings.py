@@ -71,10 +71,17 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'schuss_app',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': '$chu55',
         'HOST': '',
         'PORT': '',
     }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': 'localhost:11211',
+    }   
 }
 
 # Internationalization

@@ -44,8 +44,10 @@ def mountains_view(request, mountain_abbr=None, date=datetime.strftime(datetime.
     context['checkins'] = checkins
 
     # hidden list of active members that user can search on to enroll
-    active_members = Member.objects.filter(~Q(pass__member_type='TRIP'), pass__season=get_current_season())
-    context['filter_list'] = active_members
+    actives = Pass.objects.filter(season=get_current_season()).order_by('active_id')
+    context['actives'] = actives
+    inactives = Member.objects.filter(~Q(pass__season=get_current_season())).order_by('last_name')
+    context['inactives'] = inactives
 
 
     return render(request, 'mountains/mountains_view.html', context)

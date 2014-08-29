@@ -1,6 +1,7 @@
 from django import forms
 from localflavor.us.forms import USStateField, USPhoneNumberField #, USZipCodeField
-from members.models import Pass, Season
+from members.models import Pass, Season, MemberType, Price
+
 
 class NewMemberForm(forms.Form):
     ### DORM CHOICES LIST ###
@@ -17,6 +18,9 @@ class NewMemberForm(forms.Form):
         ),
         ('Governors', (
             ('ROS', 'Rosevelt'),
+            ('DEW', 'Dewey'),
+            ('CLI', 'Clement'),
+            ('LEH', 'Lehman'),
           )   
         ),
         ('Main St.', (
@@ -27,35 +31,6 @@ class NewMemberForm(forms.Form):
         ('GRE', 'Greiner'),
     )
     ### PASS TYPE CHOICES LIST ###
-    TYPE_CHOICES = (
-        ('UB-Student', (
-            ('FR' , 'Freshman'),
-            ('SO' , 'Sophomore'),
-            ('JR' , 'Junior'),
-            ('SR', 'Senior'),
-            ('SU', 'Super-Senior'),
-          )
-        ),
-        ('Non-UB-Student', (
-            # TODO: Fill this in with more local schools
-            ('BS', 'Buffalo State'),
-            ('ECC', 'Erie Community College'),
-            ('CAN', 'Canisius College'),
-            ('MED', 'Medaille College'),
-            ('DAE', 'Daemon University'),
-            ('NCCC', 'Niagara County Community College'),
-          )
-        ),
-        ('Fac-Staff-Alum', (
-            ('FAC', 'Faculty'),
-            ('STA', 'Staff'),
-            ('ALU', 'Alumni'),
-          )
-        ),
-        ('FAM', 'Family'), # Family doesn't have a subtype
-        ('VIP', 'Director/VIP'),
-        ('TRIP', 'Trip-Only Member'),
-    )
     ### GENDER CHOICES LIST ###
     GENDER_CHOICES = (
         ('M', 'Male'),
@@ -115,7 +90,8 @@ class NewMemberForm(forms.Form):
                                widget=forms.Select(attrs={'class':'form-control'}))
     
     ### PASS ATTRIBUTES ###
-    member_type = forms.ChoiceField(choices=TYPE_CHOICES,
+    member_type = forms.ModelChoiceField(queryset=MemberType.objects.exclude(type_abbr="STU").exclude(type_abbr="NSTU"),
+                             empty_label=None,
                              widget=forms.Select(attrs={'class':'form-control'}))
     is_reserved = forms.BooleanField(required=False, help_text='Give volunteers and office staff low numbers',
                                 widget=forms.CheckboxInput(attrs={'class':'checkbox'})
@@ -149,35 +125,6 @@ class EditMemberForm(forms.Form):
         ('GRE', 'Greiner'),
     )
     ### PASS TYPE CHOICES LIST ###
-    TYPE_CHOICES = (
-        ('UB-Student', (
-            ('FR' , 'Freshman'),
-            ('SO' , 'Sophomore'),
-            ('JR' , 'Junior'),
-            ('SR', 'Senior'),
-            ('SU', 'Super-Senior'),
-          )
-        ),
-        ('Non-UB-Student', (
-            # TODO: Fill this in with more local schools
-            ('BS', 'Buffalo State'),
-            ('ECC', 'Erie Community College'),
-            ('CAN', 'Canisius College'),
-            ('MED', 'Medaille College'),
-            ('DAE', 'Daemon University'),
-            ('NCCC', 'Niagara County Community College'),
-          )
-        ),
-        ('Fac-Staff-Alum', (
-            ('FAC', 'Faculty'),
-            ('STA', 'Staff'),
-            ('ALU', 'Alumni'),
-          )
-        ),
-        ('FAM', 'Family'), # Family doesn't have a subtype
-        ('VIP', 'Director/VIP'),
-        ('TRIP', 'Trip-Only Member'),
-    )
     ### GENDER CHOICES LIST ###
     GENDER_CHOICES = (
         ('M', 'Male'),
@@ -236,7 +183,8 @@ class EditMemberForm(forms.Form):
                                widget=forms.Select(attrs={'class':'form-control'}))
     
     ### PASS ATTRIBUTES ###
-    member_type = forms.ChoiceField(choices=TYPE_CHOICES,
+    member_type = forms.ModelChoiceField(queryset=MemberType.objects.exclude(type_abbr="STU").exclude(type_abbr="NSTU"),
+                             empty_label=None,
                              widget=forms.Select(attrs={'class':'form-control'}))
     member_id = forms.IntegerField(required=True,
                                 widget=forms.NumberInput(attrs={'class':'form-control'}))

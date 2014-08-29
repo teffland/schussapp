@@ -1,0 +1,72 @@
+<html>
+	<head>
+		<title>Schussmeisters</title>
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+	{% with pass.member as member %}
+		<h1 class="text-center"><i><b>Schussmeisters Ski Club, Inc.</b></i></h1>
+		<h3 class="text-center">{{pass.season}}</h3>
+		<div class="row col-lg-12" style="font-size:14pt;">
+			<div class="col-md-8">
+			<div class="row">
+			  <br>
+			  <div class="col-md-4">
+			    <p>ID #: &nbsp<strong>{{member.id}}</strong></p>
+			  </div>
+			  <div class="col-md-4">
+			    <p>Pass #:&nbsp<strong>{{pass.active_id}}</strong></p>
+			  </div>
+			  <div class="col-md-4">
+			    <p>Price:&nbsp<strong>${{pass.price_paid}}</strong></p>
+			  </div>
+			</div>
+			  <p>Name: &nbsp <strong>{{member.first_name}} {{member.last_name}}</strong></p>
+			<div class="row">
+			  <div class="col-md-12">
+			    <p>Membership Type: &nbsp<strong>{{verbose_member_type}}</strong>
+			      {% if verbose_member_subtype %}
+				<br>
+				&nbsp&nbsp&nbsp&nbspSubtype:&nbsp<strong>{{verbose_member_subtype}}</strong>
+
+			      {% endif %}
+			    </p>
+			    <p>Person Number: &nbsp
+			    {% if member.person_number %}<strong>{{member.person_number}}</strong>
+			    {% else %} <strong>None</strong>
+			    {% endif %}</p>
+			  </div>
+			</div>
+
+		    <!-- Row with Contact Info -->
+		    <div class="row">
+		      <br>
+		      <div class="col-md-6">
+			<p>Phone: &nbsp<strong>{{member.phone}}</strong></p>
+			<p>E-Mail: &nbsp<strong>{{member.email}}</strong></p>
+			<p>DOB:&nbsp<strong>{{member.birthday}}</strong></p>
+			<p>Gender:&nbsp<strong>{{verbose_gender}}</strong></p>
+			<p>Received By: ________________</p>
+
+
+		      </div>
+		      <div class="col-md-6">
+			<p>Dorm: &nbsp<strong>{{verbose_dorm_type}}</strong></p>
+			<p>Address:
+			  {% if member.local_address %}
+			    <strong>{{member.local_address}}</strong><br>
+			  <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+			    <strong>{{member.city}}</strong>, &nbsp <strong>{{member.state}}</strong> &nbsp <strong>{{member.zip_code}}</strong>
+			  </p>
+			  {% else %}
+			    <strong>{{member.city}}</strong>, &nbsp <strong>{{member.state}}</strong> &nbsp <strong>{{member.zip_code}}</strong></p>
+			  {% endif %}
+			</p>
+			<p>Joined:&nbsp<strong>{{member.created.date}}</strong></p>
+		      </div>
+		    </div>
+			</div>
+			</div>
+	{% endwith %}
+	</body>
+</html>

@@ -123,8 +123,8 @@ function edit_selected_trip_enroll() {
 */
 function trip_enroll_selected_member() {
     trip_id = $('#trip_id').text();
-    pass_id = $('tr.selected').children('#id').text();
-    //console.log(trip_id+' , '+pass_id);
+    pass_id = $('tr.selected').children('#pass_id').text();
+    console.log(trip_id+' , '+pass_id);
     current_url = document.URL;
     index = current_url.indexOf("trips");
     prefix = current_url.substring(0,index);
@@ -357,6 +357,7 @@ window.onscroll = function()
     } else {
         var sidebarOffset = -scrollTop;
     }
-     $('#sidebar-wrapper').css('margin-top', sidebarOffset);   
+     $('#sidebar-wrapper').css('margin-top', sidebarOffset); 
+     $('#menu-toggle').css('margin-top', sidebarOffset);  
 }
 
