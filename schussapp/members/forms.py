@@ -14,6 +14,7 @@ class NewMemberForm(forms.Form):
             ('WIL', 'Wilkeson'),
             ('RICH', 'Richmond'),
             ('RED', 'Red Jacket'),
+            ('FAR', 'Fargo'),
           )
         ),
         ('Governors', (
@@ -111,10 +112,14 @@ class EditMemberForm(forms.Form):
             ('WIL', 'Wilkeson'),
             ('RICH', 'Richmond'),
             ('RED', 'Red Jacket'),
+            ('FAR', 'Fargo'),
           )
         ),
         ('Governors', (
             ('ROS', 'Rosevelt'),
+            ('DEW', 'Dewey'),
+            ('CLI', 'Clement'),
+            ('LEH', 'Lehman'),
           )   
         ),
         ('Main St.', (
