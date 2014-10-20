@@ -23,8 +23,14 @@ def export_member_emails(request):
     actives = Pass.objects.filter(season=get_current_season()).order_by('active_id')
     # write out csv
     writer = csv.writer(response)
+    writer.writerow(["First Name", "Last Name", "Active ID", "Membership Type", "Email"])
     for m_pass in actives:
+        member = m_pass.member
+        first_name = member.first_name
+        last_name = member.last_name
+        pass_num = m_pass.active_id
+        m_type = m_pass.member_type
         email = m_pass.member.email
-        writer.writerow([email])
+        writer.writerow([first_name, last_name, pass_num, m_type, email])
 
     return response
