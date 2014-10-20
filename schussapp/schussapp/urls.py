@@ -80,8 +80,9 @@ urlpatterns += patterns('info.views',
     url(r'^info/(?P<group>[\w-]+)/(?P<article>[\w-]+)$', 'info_home', name='info_home'), 
 )
 
-### Admin Site and Wiki Site ###
+### Admin Site, Admin Tools, and Wiki Site ###
 urlpatterns += patterns('',
+    url(r'^admin_tools/', include('admin_tools.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ckeditor/', include('ckeditor.urls')),
     #url(r'^wiki/', include('wakawaka.urls')),
