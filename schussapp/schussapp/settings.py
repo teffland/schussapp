@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'trips',
     'mountains',
     'info',
+    'analytics',
 
 )
 

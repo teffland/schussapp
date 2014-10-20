@@ -68,8 +68,9 @@ urlpatterns += patterns('trips.views',
 )
 
 ### Stats Links ###
-urlpatterns += patterns('stats.views',
-    url(r'^analytics$', 'stats_home', name='stats_home'),       # analytics home page                    
+urlpatterns += patterns('analytics.views',
+    url(r'^analytics$', 'analytics_home', name='analytics_home'),       # analytics home page                    
+    url(r'^analytics/member_emails', 'export_member_emails', name='export_member_emails')
                         
 )
 

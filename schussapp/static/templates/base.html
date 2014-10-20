@@ -55,9 +55,8 @@
             <li {% if active == 'busing' %}class="active"{% endif %}><a href="{% url 'busing_home' %}">Busing</a></li>
             <li {% if active == 'trips' %}class="active"{% endif %}><a href="{% url 'trips_home' %}">Trips</a></li>
             <li {% if active == 'mountains' %}class="active"{% endif %}><a href="{% url 'mountains_home' %}">Mountains</a></li>
-<!--            <li {% if active == 'events' %}class="active"{% endif %}><a href="{% url 'events_home' %}">Events</a></li>
-            <li {% if active == 'stats' %}class="active"{% endif %}><a href="{% url 'stats_home' %}">Analytics</a></li>
--->
+            <li {% if active == 'events' %}class="active"{% endif %}><a href="{% url 'events_home' %}">Events</a></li>
+            <li {% if active == 'analytics' %}class="active"{% endif %}><a href="{% url 'analytics_home' %}">Analytics</a></li>
             <li {% if active == 'info' %}class="active"{% endif %}><a href="{% url 'info_home' %}">Office Information</a></li>
           </ul>
         </div><!--/.nav-collapse -->
