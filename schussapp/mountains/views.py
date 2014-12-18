@@ -28,8 +28,11 @@ def mountains_home(request):
 """ 
  * View the checkins for a mountain overall, or on a day
 """
-def mountains_view(request, mountain_abbr=None, date=datetime.strftime(datetime.now().date(), '%Y-%m-%d')):
+def mountains_view(request, mountain_abbr=None, date=None)  :
     context = {'active':'mountains'}
+    if not date:
+	date=datetime.strftime(datetime.now().date(),'%Y-%m-%d')
+        return redirect('mountains_view', mountain_abbr=mountain_abbr, date=date)
 
     mountain = get_object_or_404(Mountain, abbr=mountain_abbr)
     context['mountain'] = mountain
@@ -58,9 +61,18 @@ def mountains_view(request, mountain_abbr=None, date=datetime.strftime(datetime.
 def mountains_checkin_add(request, mountain_abbr=None, date=None, active_id=None):
     context = {'active':'mountains'}
     mountain = get_object_or_404(Mountain, abbr=mountain_abbr)
+    # make sure mountain is open
+    if not mountain.is_open():
+        return redirect('mountains_view', mountain_abbr=mountain_abbr, date=date)
     member_pass = get_object_or_404(Pass, active_id=int(active_id), season=get_current_season())
 
     checkin = MountainCheckin(member_pass=member_pass, mountain=mountain)
+    # make sure checkin isn't duplicate
+    checkins = mountain.todays_checkins()
+    passes = [checkin.member_pass for checkin in checkins]
+    if member_pass in passes:
+        return redirect('mountains_view', mountain_abbr=mountain_abbr, date=date)
+    
     checkin.save()
 
     return redirect('mountains_view', mountain_abbr=mountain_abbr, date=date)
