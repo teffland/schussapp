@@ -65,7 +65,7 @@
 
 	<!-- Global alert functionality: pass through context if alert/error from view -->
 	{% if alert %}
-		<script>alert({{alert}});</script>
+		<script>alert("{{alert}}");</script>
 	{% endif %}
     {% block content %}
     

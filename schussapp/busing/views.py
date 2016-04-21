@@ -62,7 +62,7 @@ def busing_home(request, date=datetime.strftime(date.today(), '%Y-%m-%d')):
               for other_bus in context['today_list']:
                 m_list = [ bc.member for bc in other_bus.res_list()]
                 for mem in m_list:res_list.append(mem)   
-              print 'list:', res_list
+              print 'reservation list:', res_list
               if member_pass not in res_list:
                 pickup = form.cleaned_data['pickup']
                 checkin = BusCheckin(member=member_pass, bus=bus, pickup=pickup)
@@ -156,7 +156,14 @@ def buscheckin_switch(request, res_id=None, bus_id=None):
     checkin.save()
   return redirect('busing_home', date=date)
 
-
+"""
+* Print busing list
+"""
+def print_bus_list(request, id=None):
+  bus = get_object_or_404(Bus, pk=int(id))
+  checkins = sorted( bus.res_list(), key=lambda res: res.member.active_id)
+  context = {'bus':bus, 'checkins':checkins}
+  return render(request, 'busing/busing_print_list.html', context)
 
 
 

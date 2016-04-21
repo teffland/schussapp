@@ -30,9 +30,7 @@
                   <div class="scrollable" style="max-height:300px; height:auto;">
                     <table class="table">
                        <tbody class="text-small member bus-checkin wait_list">
-                         <tr class="text-med head"><th>Ellicot</th></tr>
                           {% for res in waiting_list.res_list %}
-                           {% if res.pickup == "ELLI" %}
                            <tr>
                               <td id="res_id" class="hidden">{{res.id}}</td>
                               <td id="pass">{{res.member.active_id}}</td>
@@ -40,33 +38,7 @@
                               <td id="last_name">{{res.member.member.last_name}}</td>
                               <td id="member_phone">{{res.member.member.phone}}</td>
                             </tr>
-                           {% endif %}
                           {% endfor %}
-                         <tr class="text-med head"><th>Governors</th></tr>
-                          {% for res in waiting_list.res_list %}
-                           {% if res.pickup == "GOV" %}
-                           <tr>
-                              <td id="res_id" class="hidden">{{res.id}}</td>
-                              <td id="pass">{{res.member.active_id}}</td>
-                              <td id="first_name">{{res.member.member.first_name}}</td>
-                              <td id="last_name">{{res.member.member.last_name}}</td>
-                              <td id="member_phone">{{res.member.member.phone}}</td>
-                            </tr>
-                           {% endif %}
-                          {% endfor %}
-                         <tr class="text-med head"><th>Main St.</th></tr>
-                          {% for res in waiting_list.res_list %}
-                           {% if res.pickup == "MAIN" %}
-                           <tr>
-                              <td id="res_id" class="hidden">{{res.id}}</td>
-                              <td id="pass">{{res.member.active_id}}</td>
-                              <td id="first_name">{{res.member.member.first_name}}</td>
-                              <td id="last_name">{{res.member.member.last_name}}</td>
-                              <td id="member_phone">{{res.member.member.phone}}</td>
-                            </tr>
-                           {% endif %}
-                          {% endfor %}
-
                       </tbody>
                     </table>
                   </div>
@@ -95,7 +67,7 @@
                           <div class="form-group pass_fld">
                             <label class="sr-only" for="id_pass_num">Pass</label>
                             <input type="number" class="form-control pass_search" 
-                                   id="id_pass_num" max="999" min="1" name="pass_num" placeholder="42">
+                                   id="id_pass_num" max="9999" min="1" name="pass_num" placeholder="42">
                           </div>
                         </div>
                         <div class="col-sm-6 no-pad">

@@ -32,6 +32,7 @@ urlpatterns += patterns('busing.views',
     url(r'^busing/add$', 'busing_add', name='busing_add'),       # add new bus to system
     url(r'^busing/edit/(?P<id>\d{1,5})$', 'busing_edit', name='busing_edit'),  # edit bus page                        
     url(r'^busing/remove/(?P<id>\d{1,5})$', 'busing_remove', name='busing_remove'),  # remove bus
+    url(r'^busing/print/(?P<id>\d{1,5})$', 'print_bus_list', name='print_bus_list'),  # print bus
     url(r'^busing/buscheckin/remove/(?P<id>\d{1,5})$', 'buscheckin_remove', name='buscheckin_remove'),  # remove bus
     url(r'^busing/buscheckin/switch/(?P<res_id>\d{1,5})/(?P<bus_id>\d{1,5})$', 'buscheckin_switch', name='buscheckin_switch'),  # remove bus
 
@@ -42,6 +43,7 @@ urlpatterns += patterns('mountains.views',
     url(r'^mountains$', 'mountains_home', name='mountains_home'), # mountains home page                    
     url(r'^mountains/(?P<mountain_abbr>[a-zA-Z]{1,5})$', 'mountains_view', name='mountains_view'), # view a specific mountain                   
     url(r'^mountains/(?P<mountain_abbr>[a-zA-Z]{1,5})/(?P<date>(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]))$', 'mountains_view', name='mountains_view'), # view a specific mountain                   
+    url(r'^mountains/(?P<mountain_abbr>[a-zA-Z]{1,5})/(?P<date>(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]))/print_checkin_list$', 'print_checkin_list', name='print_checkin_list'), # view a checkin list on a dsy                   
     url(r'^mountains/(?P<mountain_abbr>[a-zA-Z]{1,5})/(?P<date>(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]))/add-checkin/(?P<active_id>\d{1,5})$', 'mountains_checkin_add', name='mountains_checkin_add'), # checkin a member                   
     url(r'^mountains/(?P<mountain_abbr>[a-zA-Z]{1,5})/(?P<date>(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]))/remove-checkin/(?P<checkin_id>\d{1,5})$', 'mountains_checkin_remove', name='mountains_checkin_remove'), # delete a checkin                  
              

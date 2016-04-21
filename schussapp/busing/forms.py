@@ -13,7 +13,7 @@ class BusForm(forms.ModelForm):
         }
 
 class BusCheckinForm(forms.Form):
-    pass_num = forms.IntegerField(min_value=1, max_value=999,
+    pass_num = forms.IntegerField(min_value=1, max_value=9999,
                              widget=forms.NumberInput(attrs={ 'class':'form-control pass_search','placeholder':'42'}))
     first_name = forms.CharField(max_length=30,
                              widget=forms.TextInput(attrs={ 'class':'form-control first_search',

@@ -34,7 +34,7 @@ class Mountain(models.Model):
 
     def is_open(self):
         slots = MountainScheduleSlot.objects.filter(mountain=self)
-        print 'slots:', slots
+        #print 'slots:', slots
         if slots:
             """
             print "Are they open?"
@@ -74,7 +74,7 @@ class MountainCheckin(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     def is_on_day(self, date):
-        print self.created.date()
+        #print self.created.date()
         return self.created.date() == date
 
     def __unicode__(self):

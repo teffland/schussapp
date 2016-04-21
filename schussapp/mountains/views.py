@@ -38,7 +38,6 @@ def mountains_view(request, mountain_abbr=None, date=None)  :
     context['mountain'] = mountain
     date = datetime.strptime(date, '%Y-%m-%d').date()
     context['date'] = date
-    print 'called'
 
     all_checkins = MountainCheckin.objects.filter(mountain=mountain)
     # still need to filter for the selected day
@@ -52,6 +51,8 @@ def mountains_view(request, mountain_abbr=None, date=None)  :
     inactives = Member.objects.filter(~Q(pass__season=get_current_season())).order_by('last_name')
     context['inactives'] = inactives
 
+	# render alert if there is one
+    #if alert: context['alert'] = alert
 
     return render(request, 'mountains/mountains_view.html', context)
 
@@ -83,10 +84,20 @@ def mountains_checkin_add(request, mountain_abbr=None, date=None, active_id=None
 """
 def mountains_checkin_remove(request, mountain_abbr=None, date=None, checkin_id=None):
     context = {'active':'mountains'}
-
     checkin = get_object_or_404(MountainCheckin, pk=int(checkin_id))
     checkin.delete()
-
     
     return redirect('mountains_view', mountain_abbr=mountain_abbr, date=date)
 
+"""
+ * Print the reservation list for the day
+"""
+def print_checkin_list(request, mountain_abbr=None, date=None):
+    date = datetime.strptime(date, '%Y-%m-%d').date()
+    mountain = get_object_or_404(Mountain, abbr=mountain_abbr)
+    all_checkins = MountainCheckin.objects.filter(mountain=mountain)
+    # still need to filter for the selected day
+    # (Django doesn't let you use model methods in querysets, but list comprehensions do ;)
+    checkins = [checkin for checkin in all_checkins if checkin.is_on_day(date) ]
+    context = {'checkins':checkins, 'date':date, 'mountain':mountain}
+    return render(request, 'mountains/print_checkin_list.html', context)

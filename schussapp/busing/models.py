@@ -25,7 +25,7 @@ class Bus(models.Model):
 
     # get list of all reservations for this bus
     def res_list(self):
-        res_list = BusCheckin.objects.filter(bus=self)
+        res_list = BusCheckin.objects.filter(bus=self)#.order_by('member.active_id')
         #print res_list
         return res_list
 

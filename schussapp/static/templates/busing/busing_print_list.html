@@ -1,0 +1,96 @@
+<html>
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 11 (filtered)">
+<title>Schussmeisters Ski Club, Inc</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Arial Black";
+	panose-1:2 11 10 4 2 1 2 2 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+@page Section1
+	{size:566.65pt 5.0in;
+	margin:.1in .3in .1in .3in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US>
+<div class=Section1>
+
+<br>
+<p class=MsoNormal ><b><i><span
+style='font-size:18.0pt;font-family:"Arial Black"'>Schussmeisters Ski Club,
+Inc.</span></i></b></p>
+<p class=MsoNormal ><b><i><span
+style='font-size:18.0pt;font-family:"Arial Black"'>Bus Reservation List - Bus #{{bus}}</span></i></b></p>
+<table border="1" cellpadding="10" cellspacing="0" style="text-align:center">
+   <tr>
+	<th>Res ID</th>
+	<th>Pass ID</th>
+	<th>Name</th>
+	<th>Pickup </th>
+	<th>Entered </th>
+	<th>Returned </th>
+   </tr>
+   <tr>
+	<td colspan="6">Ellicot</td>
+   </tr>
+	{% for checkin in checkins %}
+	{% if checkin.pickup == "ELLI" %}
+   <tr>
+   	<td><p class=MsoNormal><span style='font-family:Arial'>{{forloop.counter}}</span></p></td>
+   	<td><p class=MsoNormal><span style='font-family:Arial'>{{checkin.member.active_id}}</span></p></td>
+   	<td><p class=MsoNormal><span style='font-family:Arial'>{{checkin.member.member}}</span></p></td>
+   	<td><p class=MsoNormal><span style='font-family:Arial'>{{checkin.pickup}}</span></p></td>
+	<td>&#9633;</td>
+	<td>&#9633;</td>
+   </tr>
+	{% endif %}
+	{% endfor %}
+   <tr>
+	<td colspan="6">Governors</td>
+   </tr>
+	{% for checkin in checkins %}
+	{% if checkin.pickup == "GOV" %}
+   <tr>
+   	<td><p class=MsoNormal><span style='font-family:Arial'>{{forloop.counter}}</span></p></td>
+   	<td><p class=MsoNormal><span style='font-family:Arial'>{{checkin.member.active_id}}</span></p></td>
+   	<td><p class=MsoNormal><span style='font-family:Arial'>{{checkin.member.member}}</span></p></td>
+   	<td><p class=MsoNormal><span style='font-family:Arial'>{{checkin.pickup}}</span></p></td>
+	<td>&#9633;</td>
+	<td>&#9633;</td>
+   </tr>
+	{% endif %}
+	{% endfor %}
+   <tr>
+	<td colspan="6">Main St. - Goodyear</td>
+   </tr>
+	{% for checkin in checkins %}
+	{% if checkin.pickup == "MAIN" %}
+   <tr>
+   	<td><p class=MsoNormal><span style='font-family:Arial'>{{forloop.counter}}</span></p></td>
+   	<td><p class=MsoNormal><span style='font-family:Arial'>{{checkin.member.active_id}}</span></p></td>
+   	<td><p class=MsoNormal><span style='font-family:Arial'>{{checkin.member.member}}</span></p></td>
+   	<td><p class=MsoNormal><span style='font-family:Arial'>{{checkin.pickup}}</span></p></td>
+	<td>&#9633;</td>
+	<td>&#9633;</td>
+   </tr>
+	{% endif %}
+	{% endfor %}
+</table>
+
+</div>
+</body>
+
+</html>

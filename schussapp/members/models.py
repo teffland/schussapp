@@ -245,9 +245,17 @@ class Season(models.Model):
     modified = models.DateTimeField(auto_now=True)
     
     def is_current(self):
+        """Returns if this season matches the calendar year.
+
+        Assumes that the current season ends after march (3)
+        So for Jan-March, the current season sping year must 
+        match the current year.  If it's after march, we 
+        consider a season current if it's fall year matches 
+        this year, this allows for signing up people for next
+        season in the spign"""
         now = datetime.now()
         #TODO: Make this robust
-        if (now.month <= 7):
+        if (now.month <= 3):
             if ( now.year == self.spring.year ): return True
             else: return False
         else:

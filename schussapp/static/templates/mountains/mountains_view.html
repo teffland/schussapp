@@ -19,7 +19,7 @@
                       Options  <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                      <li><a href="">Print List</a></li>
+                      <li><a href="{% url 'print_checkin_list' mountain_abbr=mountain.abbr date=date %}">Print List</a></li>
                       <li class="divider hidden on_select"></li>
                       <li><a class="hidden on_select"
                       	onclick="remove_selected_mountain_checkin()">Remove Check-In</a></li>
@@ -68,7 +68,7 @@
 			          		<div class="form-group pass_fld">
 		                      <label class="sr-only" for="id_pass_num">Pass</label>
 		                      <input type="number" class="form-control pass_search" 
-		                             id="id_pass_num" max="999" min="1" name="pass_num" placeholder="42"
+		                             id="id_pass_num" max="9999" min="1" name="pass_num" placeholder="42"
 		                             {% if not mountain.is_open %}disabled{%endif%}>
 		                    </div>
 		                </div>
